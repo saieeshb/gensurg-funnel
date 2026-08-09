@@ -1,0 +1,153 @@
+expanded invite-level rows: 1154
+
+============================================================================================
+== 16. STATISTICAL HARDENING — clustering, robustness, multiplicity
+============================================================================================
+--- 16a. The independence problem ---
+Records are NOT independent: one program contributes many invites (shared screening rule),
+and one applicant contributes many invites (shared CV). Naive SEs are too narrow.
+  invites per program: mean 3.7, median 3, max 26
+  91 programs contribute >=5 invites, holding 56% of the data
+  Applicant identity is NOT recorded anywhere in the sheet, so applicant-level clustering
+  is impossible to correct for. This is the single largest un-fixable limitation.
+
+--- 16b. Logistic model with program-cluster-robust SEs ---
+            OR     lo      hi  p_clustered  p_naive  SE_naive  SE_clustered
+const    0.545  0.316   0.939        0.029    0.002     0.191         0.278
+score_c  0.945  0.828   1.080        0.408    0.346     0.060         0.068
+geo_i    1.172  0.818   1.680        0.387    0.281     0.147         0.184
+home_i   1.130  0.529   2.413        0.752    0.728     0.352         0.387
+away_i   6.485  2.976  14.131        0.000    0.000     0.354         0.397
+wk       1.108  1.012   1.213        0.026    0.001     0.031         0.046
+is_img   0.699  0.394   1.242        0.222    0.085     0.208         0.293
+is_do    1.112  0.692   1.787        0.662    0.584     0.194         0.242
+sought   3.144  1.491   6.629        0.003    0.000     0.187         0.381
+
+  Clustered SEs are on average 36% wider than naive.
+  n = 1093 invites across 306 programs.
+  Pseudo-R2 (Cox-Snell) = 0.081 — most variance is
+  unexplained, as expected when the strongest inputs (letters, school, interview) are unobserved.
+
+--- 16c. Robustness: does the Oct 22 mass-release drive the results? ---
+  ALL invites            n=1093 | signal share sought-after  74.6% vs rest  50.0% | gap +24.6 pp
+  EXCLUDING 2025-10-22   n= 713 | signal share sought-after  65.1% vs rest  48.1% | gap +17.0 pp
+  ONLY 2025-10-22        n= 380 | signal share sought-after  88.0% vs rest  53.8% | gap +34.2 pp
+
+--- 16d. Bootstrap (cluster bootstrap by program) of the desirability gradient ---
+  signal-share gap (most-sought minus rest): 24.8 pp [95% CI 8.6 to 39.4]
+  P(gap <= 0) under the bootstrap = 0.0013
+
+--- 16e. Multiplicity correction across the headline tests ---
+  test                                                  raw p     Holm p  survives
+  signal share: <=249 vs >=260 Step 2                 0.09962    0.19925  no
+  signal share: most-sought vs rest programs          0.00000    0.00000  YES
+  signal use differs by degree pathway                0.84437    0.84437  no
+  geo-preference differs by degree pathway            0.00000    0.00000  YES
+  IMG share: prelim vs categorical invites            0.00000    0.00000  YES
+  signal share rises over the season                  0.01450    0.04350  YES
+
+--- 16f. Simpson-paradox check: score-vs-signal within desirability tier ---
+  most-sought programs   n= 181  corr(signalled, score) = +0.015 (p=0.845)
+  all other programs     n= 912  corr(signalled, score) = -0.052 (p=0.114)
+  The near-zero pooled correlation is not masking opposite within-tier signs.
+
+============================================================================================
+== 17. HOW MUCH OF REALITY DOES THIS SHEET SEE?  (coverage & bias)
+============================================================================================
+Reported invites: 1154 | distinct programs appearing: 315
+Sheet's own count of programs that released invites: 498
+
+Order-of-magnitude coverage (external anchors, not from the sheet):
+  General Surgery categorical PGY-1 positions per year ~1,700-1,800 across ~350 programs.
+  At a typical ~10-12 interviews offered per position, national invite volume is ~18,000-22,000.
+  => this sheet captures roughly 6% of categorical invites (order 5-6%).
+
+Direction of the biases this creates:
+  1. VOLUNTEER bias — people post when something happens. Non-events (no invite) are invisible.
+     The sheet therefore cannot estimate any absolute probability, only compositions.
+  2. SUCCESS bias — an applicant with 15 invites can post 15 times; one with 0 posts never.
+     Records are weighted toward successful applicants, inflating apparent score/credential levels.
+  3. SURVIVOR bias in later waves — those still posting in December are those still searching.
+  4. AUDIENCE bias — the sheet skews US-MD and US-based; Non-US IMG behaviour is under-sampled
+     relative to their true applicant share (13% of records here).
+  5. RECALL/format drift — free text; ~2% of fields unparseable, and "no signal" may be
+     under-reported by people who only bother to note a signal when they have one.
+
+What this means: read every number here as "among invites that were reported", and lean on
+the tier-matched and within-sheet contrasts (which share the bias on both sides) rather than levels.
+
+--- 17b. Missing-data check: is reporting quality related to the outcome? ---
+  records missing the signal field: 6 (0.5%)
+  missing degree       : n= 29 | of these, signal share = 53.6% (vs 53.8% overall)
+  missing step2_bucket : n= 13 | of these, signal share = 30.8% (vs 53.8% overall)
+  missing geo          : n= 16 | of these, signal share = 56.2% (vs 53.8% overall)
+  Missingness is low and not concentrated in any one attribute — treat as missing-at-random-ish.
+
+============================================================================================
+== 18. PROJECTION FOR THE 2026-27 CYCLE
+============================================================================================
+--- 18a. Calendar anchoring ---
+  First reported invite of 25-26 : 2025-09-25 (Thursday)
+  Programs gained ERAS access    : 2025-09-24 (Wed) — one day earlier, consistent with the log
+  APDS universal release date    : 2025-10-22 (Wednesday) = program-access + 28 days
+  The 2027 ERAS cycle repeats the same weekday structure 364 days later (52 weeks),
+  which preserves both the date-in-month and the day-of-week:
+    program ERAS access        2025-09-24 (Wed)  ->  2026-09-23 (Wed)
+    first trickle of invites   2025-09-25 (Thu)  ->  2026-09-24 (Thu)
+    UNIVERSAL RELEASE DATE     2025-10-22 (Wed)  ->  2026-10-21 (Wed)
+    50% of invites landed      2025-10-22 (Wed)  ->  2026-10-21 (Wed)
+    75% of invites landed      2025-10-27 (Mon)  ->  2026-10-26 (Mon)
+    90% of invites landed      2025-11-05 (Wed)  ->  2026-11-04 (Wed)
+    95% of invites landed      2025-11-21 (Fri)  ->  2026-11-20 (Fri)
+
+  PRIMARY PROJECTION: the 26-27 universal release lands on Wed 2026-10-21.
+  Alternative if APDS anchors to "4th Wednesday of October" instead: Wed 2026-10-28.
+  Confirm against the APDS statement and the AAMC ERAS 2027 calendar before acting.
+
+--- 18b. Volume projection under the same reporting behaviour ---
+  25-26 reported total: 1154 invites; 35% on the single release day.
+  Expected 26-27 shape (share of season total, from 25-26):
+    week of 2026-09-21  ~ 1.5% of the season's invites
+    week of 2026-09-28  ~ 4.7% of the season's invites
+    week of 2026-10-05  ~ 4.8% of the season's invites
+    week of 2026-10-12  ~12.6% of the season's invites
+    week of 2026-10-19  ~51.5% of the season's invites
+    week of 2026-10-26  ~12.7% of the season's invites
+    week of 2026-11-02  ~ 4.9% of the season's invites
+    week of 2026-11-09  ~ 1.6% of the season's invites
+    week of 2026-11-16  ~ 0.9% of the season's invites
+    week of 2026-11-23  ~ 1.1% of the season's invites
+    week of 2026-11-30  ~ 1.1% of the season's invites
+    week of 2026-12-21  ~ 0.5% of the season's invites
+    week of 2027-01-11  ~ 0.5% of the season's invites
+
+--- 18c. What to expect on the numbers ---
+  Signal share among invitees was 53.8% in 25-26 (n=1148).
+  Gen Surgery keeps 15 signals in 26-27 (the sheet's own APPLICANT INFO tab tracks "II by Signals x/15").
+  With the signal count unchanged and applicants now a year wiser about concentrating them,
+  expect the signalled share of invitees to hold or drift UP: projected 55-62% for 26-27.
+  Step 2 CK of invitees: median 255, IQR 255-265, 43% at 260+.
+  Score inflation runs ~1 point/yr nationally, so expect the 26-27 invitee median near 255-260
+  and the practical "comfortable" threshold for academic programs to sit around 250.
+
+--- 18d. Falsifiable predictions for 26-27 (check these against the new sheet) ---
+  P1: The single busiest invite day accounts for >25% of all reported invites
+       (basis: observed 35% in 25-26)
+  P2: That day is a Wednesday in the 3rd-4th week of October (2026-10-21 primary)
+       (basis: Wed held 45% of 25-26 volume)
+  P3: >=50% of all reported invites land within the 7 days around the release date
+       (basis: 25-26: 50% by day of release)
+  P4: Signalled share of invitees is between 55% and 62%
+       (basis: 53.8% in 25-26, trending up)
+  P5: Signal share at the most-sought programs exceeds it at low-demand programs by >=15 pp
+       (basis: 25.5 pp gap in 25-26, bootstrap CI excludes 0)
+  P6: Median Step 2 CK of reported invitees is 255-260 with IQR width ~20
+       (basis: 255 / IQR 245-265 in 25-26)
+  P7: IMGs are >=50% of prelim invites but <15% of categorical invites
+       (basis: 76% vs 8% in 25-26)
+  P8: Geographic-preference share of invitees stays in the 70-78% band
+       (basis: 73.9% in 25-26)
+  P9: LOI response rate remains under 50%, and under 35% personalised
+       (basis: 34% any response; 30% personalised)
+  P10: Interview-drop activity peaks in the 2-4 weeks after the release date
+       (basis: 25-26 drops clustered late Oct-Nov)

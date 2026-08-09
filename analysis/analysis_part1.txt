@@ -1,0 +1,256 @@
+
+============================================================================================
+== 1. DATASET INVENTORY
+============================================================================================
+Weighted invite records parsed from "II by Date 25-26": 1154
+Distinct reporting rows: 1004 | distinct programs (canonicalised): 315
+Date span: 2025-09-25 to 2026-01-23  (120 days)
+Sheet's own header count of programs that released invites: 498
+Days logged with a release count: 154 | sum of daily program releases: 466
+
+============================================================================================
+== 2. WHO GETS INTERVIEWED — RAW COMPOSITION OF 1,154 INVITES
+============================================================================================
+
+degree:
+degree
+MD              73.3
+DO              13.7
+Non-US IMG       7.4
+US IMG           5.2
+IMG (unspec)     0.4 
+  total=1125
+
+Step 2 CK (decade bucket):
+  210s :     1    0.1%   cum   0.1%
+  220s :     5    0.4%   cum   0.5%
+  230s :    60    5.3%   cum   5.8%
+  240s :   212   18.6%   cum  24.4%
+  250s :   369   32.3%   cum  56.7%
+  260s :   364   31.9%   cum  88.6%
+  270s :   128   11.2%   cum  99.8%
+  280s :     2    0.2%   cum 100.0%
+  weighted mean ~257.4 | median ~255 | IQR 255-265
+
+Binary attributes (share of invitees with the attribute, among records where reported):
+  signal :   618/1148 =  53.8%  [95% CI 50.9-56.7]
+  geo    :   841/1138 =  73.9%  [95% CI 71.3-76.4]
+  home   :    42/1148 =   3.7%  [95% CI 2.7-4.9]
+  away   :    78/1153 =   6.8%  [95% CI 5.4-8.3]
+
+============================================================================================
+== 3. BASE RATES AND SIGNAL LIFT  (the denominator problem)
+============================================================================================
+From "Comm 25-26" (per-program tallies of sheet users who applied, split by signal):
+  17 programs | 544 applications | 240 carried a signal
+  => P(signal | application to THIS class of program) = 44.1%
+  NOTE: these are mostly large academic programs that solicit supplemental apps,
+        so this is a tier-specific, upward-biased estimate of the global signal rate.
+
+--- 3a. TIER-MATCHED comparison (same programs, both sheets) ---
+                applied  applied_sig  inv_n  inv_sig
+pkey                                                
+baylor               37         24.0      4        4
+indiana              42         23.0      3        3
+iowa                 22          6.0      4        3
+lehigh valley        47         19.0      7        4
+orlando              28          3.0      6        5
+tufts                83         35.0      4        4
+uc davis             34         18.0      3        1
+ut san antonio       39         20.0      1        0
+washu                41         22.0      6        5
+
+  Applications to these programs : 373, signalled 170 (45.6%)
+  Invites from these programs    : 38, signalled 29 (76.3%)
+  Odds of having signalled: applicants 0.837 -> invitees 3.222
+  ==> SIGNAL ODDS RATIO = 3.85  [95% CI 1.77-8.35]
+  ==> Relative risk of interview, signal vs no signal ~ 3.85x
+
+--- 3b. Sensitivity: global signal lift vs assumed applications per applicant ---
+  (15 signals available in Gen Surg; base rate = 15/N_apps)
+   N apps | base rate | odds ratio | interpretation
+       30 |     50.0% |       1.17 | signal multiplies interview odds ~1.2x
+       40 |     37.5% |       1.94 | signal multiplies interview odds ~1.9x
+       50 |     30.0% |       2.72 | signal multiplies interview odds ~2.7x
+       60 |     25.0% |       3.50 | signal multiplies interview odds ~3.5x
+       70 |     21.4% |       4.28 | signal multiplies interview odds ~4.3x
+       80 |     18.8% |       5.05 | signal multiplies interview odds ~5.1x
+      100 |     15.0% |       6.61 | signal multiplies interview odds ~6.6x
+
+  Observed signal share among ALL invitees = 53.8%
+
+============================================================================================
+== 4. DOES A SIGNAL SUBSTITUTE FOR A SCORE?  (compensation analysis)
+============================================================================================
+Logic: among invitees, if low-score applicants are disproportionately signallers,
+the signal is doing work the score is not. (Bayes: signal-share among invitees
+tracks the selection lift when applicants' signalling propensity is score-independent.)
+
+                n  sig  pct_signalled
+step2_bucket                         
+210.0           1    0            0.0
+220.0           5    3           60.0
+230.0          60   37           61.7
+240.0         210  129           61.4
+250.0         369  175           47.4
+260.0         361  200           55.4
+270.0         127   69           54.3
+280.0           2    1           50.0
+
+  <=249 invitees signalled: 169/276 = 61.2%
+  >=260 invitees signalled: 270/490 = 55.1%
+  difference = +6.1 pp, z=1.65, p=0.0996
+  point-biserial corr(signal, score) = -0.030 (p=0.3190)
+
+--- 4b. Same test for geographic preference ---
+                n  geo  pct_geo
+step2_bucket                   
+210.0           1    1    100.0
+220.0           5    4     80.0
+230.0          58   49     84.5
+240.0         212  165     77.8
+250.0         359  262     73.0
+260.0         361  258     71.5
+270.0         127   93     73.2
+280.0           2    0      0.0
+
+============================================================================================
+== 5. DEGREE-STRATIFIED REQUIREMENTS  (what each pathway needs to bring)
+============================================================================================
+            n_invites  %signal  %geo  %home  %away  median_step2    p25    p75  %>=260
+group                                                                                 
+DO                154     56.6  84.1    0.6   16.9         255.0  255.0  265.0    32.5
+MD                825     53.6  74.7    4.3    4.1         255.0  245.0  265.0    44.9
+Non-US IMG         83     50.6  45.7    1.2   10.8         265.0  255.0  265.0    57.8
+US IMG             63     54.0  69.8    4.9   14.3         255.0  245.0  270.0    28.6
+
+Chi-square: signal use differs by degree pathway?
+signal      False  True 
+grp                     
+DO             66     86
+MD            381    441
+Non-US IMG     41     42
+US IMG         29     34
+  chi2=0.82, dof=3, p=0.84437
+
+============================================================================================
+== 6. MULTIVARIABLE MODEL — what predicts being a SIGNALLED invitee
+============================================================================================
+                 Generalized Linear Model Regression Results                  
+==============================================================================
+Dep. Variable:                    sig   No. Observations:                  950
+Model:                            GLM   Df Residuals:                     1085
+Model Family:                Binomial   Df Model:                            7
+Link Function:                  Logit   Scale:                          1.0000
+Method:                          IRLS   Log-Likelihood:                -728.57
+Date:                Sun, 09 Aug 2026   Deviance:                       1457.1
+Time:                        10:09:19   Pearson chi2:                 1.09e+03
+No. Iterations:                     4   Pseudo R-squ. (CS):            0.05209
+Covariance Type:            nonrobust                                         
+==============================================================================
+                 coef    std err          z      P>|z|      [0.025      0.975]
+------------------------------------------------------------------------------
+const         -0.4388      0.187     -2.349      0.019      -0.805      -0.073
+score_c       -0.0233      0.058     -0.401      0.688      -0.137       0.090
+geo_i          0.1945      0.144      1.348      0.178      -0.088       0.477
+home_i         0.0789      0.347      0.227      0.820      -0.601       0.759
+away_i         1.8374      0.351      5.240      0.000       1.150       2.525
+wk             0.0994      0.031      3.203      0.001       0.039       0.160
+is_img        -0.3385      0.203     -1.665      0.096      -0.737       0.060
+is_do          0.0078      0.191      0.041      0.968      -0.367       0.382
+==============================================================================
+
+Odds ratios (reference = MD, week 0, score 255, no geo/home/away):
+            OR     lo      hi      p
+const    0.645  0.447   0.930  0.019
+score_c  0.977  0.872   1.095  0.688
+geo_i    1.215  0.915   1.612  0.178
+home_i   1.082  0.548   2.136  0.820
+away_i   6.280  3.159  12.488  0.000
+wk       1.104  1.039   1.174  0.001
+is_img   0.713  0.479   1.062  0.096
+is_do    1.008  0.693   1.465  0.968
+
+============================================================================================
+== 7. TIMING — the shape of interview season
+============================================================================================
+Weekly invite volume (reported):
+  2025-09-22    17  ####
+  2025-09-29    54  #############
+  2025-10-06    55  #############
+  2025-10-13   145  ####################################
+  2025-10-20   594  ####################################################################################################################################################
+  2025-10-27   147  ####################################
+  2025-11-03    57  ##############
+  2025-11-10    18  ####
+  2025-11-17    10  ##
+  2025-11-24    13  ###
+  2025-12-01    13  ###
+  2025-12-08     5  #
+  2025-12-15     5  #
+  2025-12-22     6  #
+  2025-12-29     4  #
+  2026-01-05     1  
+  2026-01-12     6  #
+  2026-01-19     4  #
+  10% of all reported invites had landed by 2025-10-10
+  25% of all reported invites had landed by 2025-10-20
+  50% of all reported invites had landed by 2025-10-22
+  75% of all reported invites had landed by 2025-10-27
+  90% of all reported invites had landed by 2025-11-05
+  95% of all reported invites had landed by 2025-11-21
+
+Busiest single days:
+date
+2025-10-22    409
+2025-10-23     61
+2025-10-21     54
+2025-10-24     51
+2025-10-28     50
+2025-10-14     47
+2025-10-29     37
+2025-10-13     31
+2025-10-30     27
+2025-10-16     26
+
+By day of week (weighted):
+  Monday      132   11.4%  ######################
+  Tuesday     205   17.8%  ##################################
+  Wednesday   524   45.4%  #######################################################################################
+  Thursday    151   13.1%  #########################
+  Friday      121   10.5%  ####################
+  Saturday     19    1.6%  ###
+  Sunday        2    0.2%  
+
+Signal share of invitees over time (are signalled invites front-loaded?):
+              n  sig   pct
+week                      
+2025-09-22   17    8  47.1
+2025-09-29   54   23  42.6
+2025-10-06   55   17  30.9
+2025-10-13  143   54  37.8
+2025-10-20  592  359  60.6
+2025-10-27  145   84  57.9
+2025-11-03   57   27  47.4
+2025-11-10   18    5  27.8
+  corr(signalled, days since first invite) = +0.072, p=0.0145
+
+Median Step 2 of invitees over time (score drift):
+  2025-09-22  n=  17  median 255  mean 258.5
+  2025-09-29  n=  53  median 255  mean 255.6
+  2025-10-06  n=  55  median 265  mean 258.8
+  2025-10-13  n= 143  median 255  mean 257.0
+  2025-10-20  n= 591  median 255  mean 258.0
+  2025-10-27  n= 143  median 255  mean 255.3
+  2025-11-03  n=  55  median 255  mean 255.7
+  2025-11-10  n=  18  median 255  mean 257.2
+
+============================================================================================
+== 8. THE "OCTOBER 22" MASS-RELEASE PHENOMENON
+============================================================================================
+2025-10-22: 409 invites across 116 programs | signal share 60.0%
+2025-10-23: 61 invites across 18 programs | signal share 67.2%
+2025-10-21: 54 invites across 13 programs | signal share 53.7%
+
+Share of the whole season's reported invites on the single biggest day: 35.4%
+Share in the 3 biggest days: 45.4%

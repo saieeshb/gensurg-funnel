@@ -1,0 +1,203 @@
+
+============================================================================================
+== 9. PROGRAM DESIRABILITY (from "RANK SPOTS 25-26") AND WHO IT INVITES
+============================================================================================
+programs listed: 348 | programs with >=1 rank: 300 | total rank slots: 1110
+Of 1110 rank-list slots reported, 249 are #1 ranks => implied median rank-list depth ~4.5 programs per applicant
+
+Most-desired programs (by #1 ranks, then top-3):
+                                         program state  n_rank  r1  n_top3
+Mayo Clinic College of Medicine and Science (...    MN    22.0 8.0    18.0
+University of Nebraska Medical Center College...    NE    13.0 7.0    12.0
+                                        Stanford    CA    15.0 6.0    13.0
+     Emory University School of Medicine Program    GA    11.0 6.0    10.0
+    University of Michigan Health System Program    MI    15.0 5.0    12.0
+    Vanderbilt University Medical Center Program    TN    13.0 5.0    10.0
+           Yale-New Haven Medical Center Program    CT    12.0 5.0     9.0
+Washington University/B-JH/SLCH Consortium Pr...    MO    12.0 5.0     9.0
+               University of Utah Health Program    UT    11.0 5.0     8.0
+     University of South Florida Morsani Program    FL     9.0 5.0     8.0
+                Johns Hopkins University Program    MD    17.0 4.0    11.0
+  University of North Carolina Hospitals Program    NC    17.0 4.0    10.0
+   Indiana University School of Medicine Program    IN    16.0 4.0    10.0
+                           University of Alabama    AL    14.0 4.0    10.0
+                   University of Florida Program    FL    12.0 4.0     9.0
+                       Howard University Program    DC    12.0 4.0     8.0
+             Cleveland Clinic Foundation Program    OH     8.0 4.0     8.0
+                University of Washington Program    WA     8.0 4.0     7.0
+
+Concentration of demand:
+  top  10 programs hold  14.5% of all reported rank slots
+  top  25 programs hold  30.0% of all reported rank slots
+  top  50 programs hold  46.7% of all reported rank slots
+  top 100 programs hold  67.1% of all reported rank slots
+  Gini coefficient of rank-slot demand across 348 programs = 0.526
+
+--- 9b. Invite composition by program desirability tier ---
+programs matched between RANK SPOTS and invite log: 112
+                        invites  %signal  %geo  median_step2  %>=260   %MD  %IMG
+tier                                                                            
+unranked by anyone           27     38.5  74.1         265.0    55.6  88.9   0.0
+1-2 ranks                   128     29.7  80.5         255.0    28.1  68.0  10.9
+3-5 ranks                   128     54.7  69.6         255.0    42.9  75.0  14.1
+6+ ranks (most sought)      188     74.6  75.9         265.0    56.7  78.2  13.3
+
+  signal share, most-sought programs  : 138/185 = 74.6%
+  signal share, low-demand programs   : 410/835 = 49.1%
+  difference +25.5 pp, z=6.29, p=0.0000
+
+============================================================================================
+== 10. GEOGRAPHY
+============================================================================================
+invites mapped to a state: 471/1154 (41%)
+           invites  %geo-pref  %signal  %IMG   %DO
+region                                            
+Northeast      178       81.8     59.1  15.2   7.9
+South          147       75.3     54.4  17.0  15.6
+Midwest         84       67.9     42.2   1.2  11.9
+West            62       67.2     60.7   6.5  11.3
+
+Top states by reported invite volume:
+state
+NY    72
+FL    38
+NJ    31
+MA    28
+PA    22
+GA    19
+CA    17
+MD    17
+MI    17
+WA    16
+NC    15
+TX    15
+
+============================================================================================
+== 11. PRELIM vs CATEGORICAL
+============================================================================================
+PRELIM                 n=   83 | %signal  59.0 | %geo  45.7 | median Step2 265 | %IMG  75.9
+CATEGORICAL (rest)     n= 1071 | %signal  53.4 | %geo  76.1 | median Step2 255 | %IMG   7.7
+
+IMG share of prelim invites vs categorical invites — the prelim track is the IMG on-ramp.
+
+============================================================================================
+== 12. IMG-SPECIFIC FACTORS ("II by Date 25-26 IMGs")
+============================================================================================
+structured IMG invite rows: 84
+signalled: 47/84 = 56.0%
+research year (at that program or elsewhere): 55/84 = 65.5%
+prior prelim year: 0/84 = 0.0%
+Cat vs Prelim: 
+cat_prelim
+cat       44
+prelim    39
+
+median Step2 (from stats string, n=79): 255
+             n  median_step2  pct_signal  pct_research
+type                                                  
+Non-US IMG  49         255.0        0.51          0.80
+US IMG      30         265.0        0.70          0.53
+
+Cross-tab research year x signalled:
+sig     0   1
+res          
+False  12  17
+True   25  30
+  Fisher exact OR=0.85, p=0.819
+
+Top programs inviting IMGs:
+program
+JFK Medical Center NJ                  9
+Johns Hopkins University               5
+BIDMC                                  3
+UCF Ocala                              2
+Mercy St Vincent OH                    2
+Baylor College of Medicine             2
+Mayo Jacksonville                      2
+Cleveland,Ohio                         2
+UPenn                                  2
+HF Providence                          2
+University of South Florida Morsani    2
+Loma Linda                             2
+
+============================================================================================
+== 13. POST-INTERVIEW SIGNALS: LETTERS OF INTENT
+============================================================================================
+LOI rows logged: 69 | programs: 64
+LOIs that got ANY response : 42 | no response: 80  => response rate 34.4%
+LOIs sent to a programme the applicant had signalled: Y=72, N=13 (84.7% signalled)
+
+Of 38 described responses, how many were more than boilerplate:
+  contains "generic": 2 | contains positive/waitlist/invite/rank language: 22
+   - generic - thanked for email, LOI forwarded to review committee 
+   - positive - added to short waitlist +2
+   - received IV invite day later
+   - generic - "thank you," no extra info on interviews or if it would be forwarded +7
+   - Still evaluating, will contact if selected;
+rejection by PC, done with selecting applicants
+   - received IV invite
+   - PD replied to say he would add me to waitlist 
+   - Done reviewing application and sent out invites for the season and then I received invite a couple days later 
+   - received IV invite
+   - Soft Rejection by PC. Focusing on applicants that signalled this season.
+   - Rejection by PC
+   - no slots available
+   - waitlist from PC
+   - waitlist from PD
+
+Second LOI tally sheet ("Letter of intent response"), n=40 LOIs:
+  no response 17 (42%) | generic 11 (28%) | personalised 12 (30%)
+
+============================================================================================
+== 14. POST-INTERVIEW COMMUNICATION & REJECTION/WAITLIST BEHAVIOUR
+============================================================================================
+post-interview communication reports: 0
+
+rejection reports: 20 | waitlist reports: 4
+                                 program                 date        rej     wave
+                Trinity Health Ann Arbor  2025-09-25 00:00:00  Rejection   R-Wave
+                      FIU/Baptist Health 10/17,10/20 10/27 +1 Rejection    R-Wave
+        Virginia Mason Franciscan Health  2025-10-28 00:00:00 Rejection    R-Wave
+                University of Washington  2025-10-29 00:00:00  Rejection   R-Wave
+          University of Alabama Hospital  2025-11-03 00:00:00 Rejection  R- wave 
+            Maine Medical Center Program  2025-11-05 00:00:00  Rejection  R-Wave 
+             University of North Dakota  11/5/2025\n11/6/2025  Rejection  R-Wave 
+                   HCA HealthONE Swedish  2025-11-17 00:00:00  Rejection Post LOI
+                                   UPenn  2025-11-18 00:00:00 Rejection   R-wave 
+                                Stanford  2025-11-20 00:00:00  Rejection  R-wave?
+                                     MGH  2025-11-21 00:00:00  Rejection  R-wave?
+                          NYP / Columbia  2025-11-25 00:00:00  Rejection   R-wave
+Corewell health Dearborn/Trenton Program  2025-12-04 00:00:00  Rejection      NaN
+                                  Temple  2025-12-11 00:00:00  Rejection   R-wave
+                            South dakota  2025-12-19 00:00:00  Rejection   R-wave
+                 Gundersen Lutheran (WI)  2025-12-22 00:00:00  Rejection   R-wave
+                                    Mayo  2026-01-22 00:00:00          R   R-Wave
+                 University of Tennessee  2026-01-26 00:00:00          R   R-Wave
+                                UChicago  2026-02-04 00:00:00          R   R-Wave
+  Centro Médico Menonita de Cayey (CCMC)  2026-03-05 00:00:00          R   R-Wave
+
+============================================================================================
+== 15. INTERVIEW CHURN — "IIs dropped 25-26"
+============================================================================================
+non-trivial cells in dropped-interview log: 83
+sample:
+   - Program #2
+   - Program #3
+   - Program #4
+   - Program #5
+   - Program #6
+   - Program #7
+   - Program #8
+   - Program #9
+   - Program #10
+   - Program #11
+   - Program #12
+   - Program #13
+   - Program #14
+   - Program #15
+   - Program #16
+   - Program #17
+   - Program #18
+   - Program #19
+   - Program #20
+   - Program #21

@@ -1,0 +1,421 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Methods &amp; limits — Gen Surg funnel</title>
+<meta name="description" content="How 1,154 interview invitations and 361 applicant records were parsed, how denominators were recovered, and every reason to distrust the result.">
+<meta name="theme-color" content="#FBFAF8" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0D0F11" media="(prefers-color-scheme: dark)">
+<script>document.documentElement.classList.add("js");</script>
+<link rel="stylesheet" href="assets/style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M8 2 L14 14 L2 14 Z' fill='%23C33A1C'/%3E%3C/svg%3E">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="masthead">
+  <div class="wrap masthead-in">
+    <a class="wordmark" href="./">GEN SURG · THE FUNNEL</a>
+    <nav aria-label="Primary">
+      <a href="./">Findings</a>
+      <a href="img.html">IMG</a>
+      <a href="methods.html" aria-current="page">Methods</a>
+      <a href="https://github.com/saieeshb/gensurg-funnel">Source</a>
+      <button class="theme-btn" id="theme" type="button">Dark</button>
+    </nav>
+  </div>
+</header>
+
+<main id="main" class="wrap doc">
+
+<section class="titleblock" style="padding-bottom:1rem">
+  <h1 style="font-size:clamp(1.9rem,4.6vw,3rem)">Methods, and every reason to distrust this</h1>
+  <p class="thesis">
+    The findings page states what the data supports. This page states how it was obtained and where
+    it breaks. If a number on the other page matters to a decision you are about to make, the
+    reason to trust or discard it is here.
+  </p>
+</section>
+
+<nav class="toc" aria-label="Contents">
+  <a href="#inventory"><span>01</span><span>What is actually in the two workbooks</span></a>
+  <a href="#parsing"><span>02</span><span>Turning free text into records</span></a>
+  <a href="#recovery"><span>03</span><span>The field Google Sheets destroyed</span></a>
+  <a href="#denominator"><span>04</span><span>The denominator problem</span></a>
+  <a href="#clustering"><span>05</span><span>Clustering, and why n is not 1,154</span></a>
+  <a href="#multiplicity"><span>06</span><span>Multiplicity: two findings that died</span></a>
+  <a href="#bias"><span>07</span><span>Selection bias, named and directed</span></a>
+  <a href="#confounding"><span>08</span><span>Confounding in the application-count result</span></a>
+  <a href="#outcome-bias"><span>09</span><span>Why outcome reporting is the weakest link</span></a>
+  <a href="#power"><span>10</span><span>What this dataset cannot see</span></a>
+  <a href="#invite-model"><span>11</span><span>Model specifications</span></a>
+  <a href="#reproduce"><span>12</span><span>Reproduce it yourself</span></a>
+</nav>
+
+<h2 id="inventory">01 · What is actually in the two workbooks</h2>
+<p>
+  The two files record <strong>different things</strong>, and the single most important
+  methodological fact here is that they cannot be stacked into a time series.
+</p>
+<div class="table-wrap">
+<table>
+  <caption>Structural comparison of the two source workbooks</caption>
+  <thead><tr><th>Property</th><th>2024–25 workbook</th><th>2025–26 workbook</th></tr></thead>
+  <tbody>
+    <tr><td>Unit of observation</td><td>the applicant</td><td>the invitation</td></tr>
+    <tr><td>Records parsed</td><td class="n">361</td><td class="n">1,154</td></tr>
+    <tr><td>Step 2 CK</td><td>exact score</td><td>decade bucket only</td></tr>
+    <tr><td>Application counts</td><td>yes</td><td>no</td></tr>
+    <tr><td>Signal conversion</td><td>yes, x/15</td><td>per-invite flag only</td></tr>
+    <tr><td>Match outcome</td><td class="n">185 reported</td><td>none</td></tr>
+    <tr><td>Invitation dates</td><td>none</td><td>every record</td></tr>
+    <tr><td>Programme identity</td><td>region only</td><td class="n">315 programmes</td></tr>
+    <tr><td>Applicant identity</td><td>pseudonym</td><td><strong>none at all</strong></td></tr>
+  </tbody>
+</table>
+</div>
+<p>
+  The 2026–27 tabs in the second workbook were empty scaffolding at the time of analysis — the
+  <code>IV IMPRESSIONS 26-27</code> tab has 407 rows and one comment in it, and
+  <code>2nd Look 26-27</code> has zero filled responses. Nothing on the findings page is derived
+  from them.
+</p>
+
+<h2 id="parsing">02 · Turning free text into records</h2>
+<p>
+  The 2025–26 invitation log is a date × programme grid in which each cell holds a programme name
+  followed by one parenthetical per invitee, in a convention the sheet declares in its own header.
+  A real cell, unedited:
+</p>
+<pre>Bayhealth Medical Center (DE)
+(-home,-away, -signal, +geo, MD,25x),
+(-home, -away, -signal, +geo, IMG, 27x)
+(-home, -away, -signal, +geo, DO, 26x)+2, (-home, -away, -signal, +geo, MD, 24x) +4</pre>
+<p>
+  The parser tolerates unclosed parentheses, <code>{</code> typed for <code>(</code>, tally suffixes
+  (<code>x2</code> meaning two people, <code>+4</code> meaning four <em>additional</em> people),
+  six spellings of the IMG pathway, four score formats including the typo <code>256</code>, and
+  attribute order swaps. It yielded 1,004 parentheticals expanding to 1,154 weighted invitations.
+</p>
+<p>
+  One decision matters more than the rest: <strong>missing attributes are coded unknown, not
+  negative.</strong> An entry reading <code>(+home, -away, +geo, MD, 24x)</code> has no signal
+  field. Treating that as “no signal” would have manufactured the headline result. Field
+  completeness after parsing ran 97.5–99.9%.
+</p>
+
+<h2 id="recovery">03 · The field Google Sheets destroyed</h2>
+<p>
+  The 2024–25 workbook has a column headed <code>II by Signals x/15</code> — how many of an
+  applicant's fifteen programme signals produced an interview. It looked unusable: most cells held
+  dates like <code>2024-07-15</code>.
+</p>
+<p>
+  They are not dates. Google Sheets silently coerced entries typed as <code>7/15</code> into
+  7 July. The day component is always 15 — the denominator — and the month component is the
+  numerator. Values above twelve survived as text, because <code>13/15</code> is not a valid month,
+  which is exactly the pattern that confirms the mechanism rather than merely fitting it.
+</p>
+<pre>def sig_yield(v):
+    if isinstance(v, (datetime, date, pd.Timestamp)):
+        return v.month if v.day == 15 else nan   # "7/15" -> 2024-07-15
+    m = re.match(r'^(\d{1,2})\s*/\s*15$', str(v).strip())
+    return float(m.group(1)) if m else nan       # "13/15" survived as text</pre>
+<p>
+  This recovered <strong>254 usable records</strong>, 233 of them rescued from date-coercion. It is
+  the only direct measurement of signal conversion in either workbook, and the entire
+  signal-amplification finding rests on it.
+</p>
+
+<h2 id="denominator">04 · The denominator problem</h2>
+<p>
+  This is the analysis most readings of these spreadsheets get wrong. The invitation log records
+  invitations, not applications. <strong>You cannot compute the probability of an interview given a
+  signal from invitations alone.</strong> Observing that 54% of invitees signalled proves nothing
+  on its own — if 54% of applications carried signals, the lift would be exactly zero.
+</p>
+<p>
+  The denominator came from <code>Comm 25-26</code>, a tab nobody treats as an analytic asset. It
+  tallies, per programme, how many sheet users applied and how many applied <em>without</em> a
+  signal. Across 17 programmes and 544 applications, 44.1% carried a signal — and the rate varies
+  enormously by programme, from 10.7% at Orlando Health to 64.9% at Baylor.
+</p>
+<p>The estimate was then made two independent ways, which is why it is trustworthy:</p>
+<ul>
+  <li>
+    <strong>Tier-matched.</strong> Nine programmes appear in both tabs. Same programmes, same
+    cohort, both sides carrying the same reporting bias. Applications: 45.6% signalled. Invitations
+    from those same programmes: 76.3%. <strong>Odds ratio 3.85 (95% CI 1.77–8.35).</strong>
+  </li>
+  <li>
+    <strong>Structural.</strong> Fifteen signals divided by N applications gives a base rate
+    directly. At the 60–70 applications typical of this specialty, the implied odds ratio is
+    3.50–4.28.
+  </li>
+</ul>
+<p>
+  Two methods with different assumptions and different failure modes landing on the same number is
+  worth more than either alone.
+</p>
+
+<h2 id="clustering">05 · Clustering, and why n is not 1,154</h2>
+<p>
+  Invitation records are not independent. One programme contributes up to 26 of them, all produced
+  by one committee applying one screening rule. 91 programmes contribute five or more, holding 56%
+  of the data.
+</p>
+<div class="table-wrap">
+<table>
+  <caption>Effect of programme clustering on effective sample size</caption>
+  <thead><tr><th>Quantity</th><th>Value</th></tr></thead>
+  <tbody>
+    <tr><td>Mean invitations per programme</td><td class="n">3.7</td></tr>
+    <tr><td>Intraclass correlation (signal status)</td><td class="n">0.415</td></tr>
+    <tr><td>Design effect</td><td class="n">2.48</td></tr>
+    <tr class="is-index"><td>Effective sample size</td><td class="n">≈ 465, not 1,154</td></tr>
+    <tr><td>Clustered SEs vs naive</td><td class="n">36% wider</td></tr>
+  </tbody>
+</table>
+</div>
+<p>
+  An ICC of 0.415 is itself a finding: <strong>programmes differ from each other far more than
+  applicants within a programme differ from one another.</strong> Which programme you apply to is a
+  bigger lever than marginal changes to your application. Every model on the findings page uses
+  programme-clustered standard errors.
+</p>
+<div class="caution">
+  <p class="grad-label">The limitation that cannot be fixed</p>
+  <p>
+    Applicant identity is recorded nowhere in the 2025–26 invitation log. One applicant with twelve
+    invitations appears as twelve independent records and there is no way to detect it. No
+    correction exists for this, and it is the single largest unfixable weakness in the invite-side
+    analysis.
+  </p>
+</div>
+
+<h2 id="multiplicity">06 · Multiplicity: two findings that died</h2>
+<p>
+  Running many tests on one dataset produces significant-looking results by chance. Six headline
+  tests were Holm-corrected together.
+</p>
+<div class="table-wrap">
+<table>
+  <caption>Holm-corrected headline tests</caption>
+  <thead><tr><th>Test</th><th>Raw p</th><th>Holm p</th><th>Survives</th></tr></thead>
+  <tbody>
+    <tr><td>Signal share: most-sought vs other programmes</td><td class="n">&lt;10⁻⁵</td><td class="n">&lt;10⁻⁵</td><td>yes</td></tr>
+    <tr><td>Geographic tie differs by pathway</td><td class="n">&lt;10⁻⁵</td><td class="n">&lt;10⁻⁵</td><td>yes</td></tr>
+    <tr><td>IMG share: preliminary vs categorical</td><td class="n">&lt;10⁻⁵</td><td class="n">&lt;10⁻⁵</td><td>yes</td></tr>
+    <tr><td>Signal share rises over the season</td><td class="n">0.0145</td><td class="n">0.0435</td><td>yes</td></tr>
+    <tr class="is-index"><td>Signal share: ≤249 vs ≥260 Step 2</td><td class="n">0.0996</td><td class="n">0.1993</td><td><strong>no</strong></td></tr>
+    <tr class="is-index"><td>Signal use differs by pathway</td><td class="n">0.8444</td><td class="n">0.8444</td><td><strong>no</strong></td></tr>
+  </tbody>
+</table>
+</div>
+<p>
+  The first casualty was a hypothesis this analysis expected to confirm: that low scorers lean on
+  signals to compensate. Among invitees, they do not. The 2024–25 conversion data then showed the
+  opposite relationship — conversion <em>rises</em> with score — which is the finding that
+  replaced it.
+</p>
+
+<h2 id="bias">07 · Selection bias, named and directed</h2>
+<div class="table-wrap">
+<table>
+  <caption>Biases in a voluntary self-reported dataset</caption>
+  <thead><tr><th>Bias</th><th>Mechanism</th><th>Direction</th></tr></thead>
+  <tbody>
+    <tr><td>Volunteer</td><td>people post events, not non-events</td><td>no absolute probability is estimable</td></tr>
+    <tr><td>Success</td><td>15 invitations means 15 posts; zero means none</td><td>inflates apparent credentials</td></tr>
+    <tr><td>Survivor</td><td>December posters are those still searching</td><td>late-season figures unrepresentative</td></tr>
+    <tr><td>Audience</td><td>the sheet skews US-MD and US-based</td><td>non-US IMG behaviour under-sampled</td></tr>
+    <tr><td>Recall</td><td>“no signal” may go unmentioned</td><td>signal share possibly overstated</td></tr>
+  </tbody>
+</table>
+</div>
+<p>
+  Against roughly 1,700–1,800 categorical positions and 10–12 interviews offered per position,
+  national volume is around 18,000–22,000 invitations. This dataset holds 1,154, so coverage is
+  about <strong>5–6%</strong>. That figure uses external anchors, not the workbooks.
+</p>
+<p>
+  This is why the load-bearing estimate is the tier-matched one: both sides of that comparison are
+  drawn from the same self-selected population, so the bias largely cancels. Comparisons within the
+  data are defensible. Levels are not.
+</p>
+
+<h2 id="confounding">08 · Confounding in the application-count result</h2>
+<p>
+  The finding that hit rate collapses as application count rises is <strong>not causal and cannot
+  be made causal with this data.</strong> The obvious mechanism runs backwards: applicants who
+  expect a low hit rate apply more broadly <em>because</em> they expect it. Application count is
+  partly a measure of the applicant's own assessment of their competitiveness.
+</p>
+<p>What survives that objection is narrower, and is the version stated on the findings page:</p>
+<ul>
+  <li>the marginal slope flattens to zero past roughly sixty applications, within the observed data;</li>
+  <li>the broad-application strategy demonstrably does not rescue the people using it — the 120+
+    group ends with fewer interviews in absolute terms than the 40–59 group;</li>
+  <li>therefore the marginal application past sixty has a poor expected return, whichever direction
+    the causation runs.</li>
+</ul>
+<p>
+  It does not follow that cutting a list to forty programmes raises anyone's hit rate. Nothing here
+  supports that, and it would be the natural misreading.
+</p>
+
+<h2 id="outcome-bias">09 · Why outcome reporting is the weakest link</h2>
+<p>
+  Only 185 of 361 applicants (51%) recorded a match outcome. Reporting is voluntary and happens
+  months after the fact. People who match have a reason to return and update; people who do not
+  match also return, to ask what to do next. <strong>The direction of this bias is genuinely
+  unclear</strong>, which is worse than a bias whose direction is known.
+</p>
+<p>
+  The 65.4% categorical rate on the findings page is therefore a within-sample figure and should
+  not be read as a match rate for General Surgery. The interview-count gradient is more robust than
+  the level, because it compares reporters against reporters.
+</p>
+<p>
+  One further caution on the match model: conditional on interview count, Step 2 CK flips
+  <em>negative</em> (OR 0.58, p = 0.02). That is not evidence a higher score hurts. It is collider
+  stratification — holding interview count fixed compares a 270 who managed only eight interviews
+  against a 240 who managed eight, and the former has something else going wrong or aimed at harder
+  programmes. The causal path for score runs through interview count, where the Poisson model
+  measures it at 1.22× per ten points.
+</p>
+
+<h2 id="power">10 · What this dataset cannot see</h2>
+<div class="table-wrap">
+<table>
+  <caption>Power to detect a difference in signal share, most-sought vs other programmes</caption>
+  <thead><tr><th>Effect size</th><th>Power</th></tr></thead>
+  <tbody>
+    <tr class="is-index"><td>5 percentage points</td><td class="n">0.23</td></tr>
+    <tr><td>10 percentage points</td><td class="n">0.70</td></tr>
+    <tr><td>15 percentage points</td><td class="n">0.96</td></tr>
+    <tr><td>20+ percentage points</td><td class="n">≈1.00</td></tr>
+  </tbody>
+</table>
+</div>
+<p>
+  Effects below about ten percentage points are invisible here. Every null result on the findings
+  page — publications, geographic tie in the invite model, home rotation, DO status — is consistent
+  with a real effect under that threshold. <strong>Absence of evidence, not evidence of
+  absence.</strong> The publications result in particular says that publication count is not a
+  <em>large</em> lever for interview count; it does not say the effect is zero.
+</p>
+
+<h2 id="invite-model">11 · Model specifications</h2>
+<h3>Interview count (2024–25)</h3>
+<p>
+  Poisson GLM, HC1 robust standard errors, n = 337. Outcome: number of interview invitations.
+  Predictors: Step 2 CK centred at 255 per 10 points, IMG pathway, AOA, M3 surgery honours,
+  log publications, top-quartile class rank, log applications sent.
+</p>
+<h3>Signalled-invitee status (2025–26)</h3>
+<p>
+  Logistic GLM, standard errors clustered by programme, n = 1,093 invitations across 306
+  programmes. Outcome: whether the invitee had signalled. Predictors: Step 2 bucket, geographic
+  tie, home programme, away rotation, weeks into the season, IMG pathway, DO pathway, most-sought
+  programme.
+</p>
+<p>
+  Cox–Snell pseudo-R² is 0.081. Most variance is unexplained, which is expected when the strongest
+  real inputs — letters, medical school, the interview itself — are unobserved. A model of this
+  data that reported a high R² would be the suspicious one.
+</p>
+<h3>Robustness</h3>
+<ul>
+  <li>Dropping 22 October (35% of the invitation data) narrows the tier gradient from +24.6 to
+    <strong>+17.0 pp</strong>; it survives.</li>
+  <li>Cluster bootstrap over programmes, 4,000 resamples: gap 24.8 pp, 95% CI 8.6–39.4,
+    P(gap ≤ 0) = 0.0013.</li>
+  <li>Simpson's paradox check: the near-zero pooled score/signal correlation does not conceal
+    opposite within-tier signs (+0.015 and −0.052).</li>
+</ul>
+<h3>A note on colour</h3>
+<p>
+  The charts use one accent against neutral ink, which fails a categorical-palette validator on
+  lightness and chroma by construction — near-black is a neutral, not a hue. The checks that govern
+  whether two marks can be told apart all pass (CVD ΔE 26.4, normal-vision ΔE 38.8, contrast ≥3:1).
+  The one two-series chart additionally distinguishes its series by hatch fill, a legend, and
+  direct median labels, so identity never rests on colour alone.
+</p>
+
+<h2 id="reproduce">12 · Reproduce it yourself</h2>
+<p>
+  Everything on both pages is generated from the two workbooks by the scripts in
+  <code>analysis/</code>. Nothing is hand-entered.
+</p>
+<pre>git clone https://github.com/saieeshb/gensurg-funnel
+cd gensurg-funnel
+python3 -m venv venv &amp;&amp; ./venv/bin/pip install -r analysis/requirements.txt
+cd analysis
+../venv/bin/python parse_ii.py      # 2025-26 invitations -> records
+../venv/bin/python parse_2425.py    # 2024-25 applicants  -> records
+../venv/bin/python analyze.py       # composition, base rates, timing
+../venv/bin/python analyze2.py      # tiers, geography, IMG, letters
+../venv/bin/python analyze3.py      # clustering, bootstrap, projection
+../venv/bin/python combined.py      # both cycles together
+../venv/bin/python export_site.py   # -> assets/site.json</pre>
+<p>
+  The scripts expect the two workbooks at the paths in <code>data/</code>. Every figure on the
+  findings page reads <code>assets/site.json</code>, so you can diff a re-run against what is
+  published.
+</p>
+<div class="caution">
+  <p class="grad-label">Provenance</p>
+  <p>
+    The source workbooks are community artifacts, built by hundreds of General Surgery applicants
+    over two cycles. They are reproduced here as downloaded. The analysis is not affiliated with
+    the spreadsheets' maintainers, the APDS, the AAMC, or the NRMP, and none of them have reviewed
+    it.
+  </p>
+</div>
+
+<p style="margin-top:2.5rem"><a href="./" style="font-weight:600">← Back to the findings</a></p>
+
+</main>
+
+<footer class="foot">
+  <div class="wrap foot-in">
+    <div>
+      <h4>Sources</h4>
+      <ul>
+        <li><a href="data/2024-2025%20Residency%20Application%20Spreadsheet.xlsx">2024–25 workbook (.xlsx)</a></li>
+        <li><a href="data/Official%202026-2027%20Gen%20Surgery%20Spreadsheet.xlsx">2025–26 / 2026–27 workbook (.xlsx)</a></li>
+        <li><a href="assets/site.json">Every published figure (JSON)</a></li>
+        <li><a href="report.md">Full written report (Markdown)</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Reproduce</h4>
+      <ul>
+        <li><a href="https://github.com/saieeshb/gensurg-funnel">Repository</a></li>
+        <li><a href="https://github.com/saieeshb/gensurg-funnel/tree/main/analysis">Analysis scripts</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Pages</h4>
+      <ul>
+        <li><a href="./">Findings</a></li>
+        <li><a href="img.html">IMG analysis</a></li>
+        <li><a href="methods.html">Methods &amp; limits</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Colophon</h4>
+      <p class="colophon">
+        Analysis and site by Saieesh. Data belongs to the General Surgery applicant community that
+        built the original spreadsheets. No trackers, no cookies, no analytics.
+      </p>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/data.js"></script>
+<script src="assets/charts.js"></script>
+</body>
+</html>

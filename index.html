@@ -1,0 +1,630 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Funnel — what actually drives a General Surgery match</title>
+<meta name="description" content="Two cycles of the crowdsourced General Surgery applicant spreadsheets, analysed: 361 applicants with outcomes and 1,154 interview invites. Where the funnel narrows, and which decisions act on which stage.">
+<meta property="og:title" content="The Funnel — what actually drives a General Surgery match">
+<meta property="og:description" content="361 applicants with outcomes. 1,154 interview invites. What the numbers support, and what they cannot.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#FBFAF8" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0D0F11" media="(prefers-color-scheme: dark)">
+<script>document.documentElement.classList.add("js");</script>
+<link rel="stylesheet" href="assets/style.css">
+<link rel="preload" href="assets/fonts/publicsans-2.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M8 2 L14 14 L2 14 Z' fill='%23C33A1C'/%3E%3C/svg%3E">
+</head>
+<body>
+<!--
+  THESIS: The application cycle is a funnel with four narrowing stages, and every decision an
+  applicant controls acts on exactly one of them. Refuses the dashboard of equal-weight stat
+  cards that lets unrelated findings float with no causal order.
+  OWN-WORLD: A calibrated measuring instrument. Near-monochrome paper ground, hairline
+  graduations, tabular figures throughout, and one vermilion index mark used only where a value
+  is actually measured — never as decoration. Public Sans + Spline Sans Mono. Range bands carry
+  spread; index lines carry the median.
+  STORY: The reader sees where the funnel actually narrows, learns which lever acts on that
+  stage and how strong the evidence is, and leaves having changed one decision.
+  FIRST VIEWPORT: The instrument at full width — three graduated scales on one shared axis,
+  75 applications narrowing to 14 invites to 12 interviews, plus an outcome proportion bar.
+  Title block above, one-line thesis, provenance rule beneath. No hero headline, no CTA.
+  FORM: The funnel; candidate 4 of 7 on the grounded structural list; seed key d574877b.
+  FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, and DESIGN.md
+-->
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="masthead">
+  <div class="wrap masthead-in">
+    <a class="wordmark" href="./">GEN SURG · THE FUNNEL</a>
+    <nav aria-label="Primary">
+      <a href="./" aria-current="page">Findings</a>
+      <a href="img.html">IMG</a>
+      <a href="methods.html">Methods</a>
+      <a href="https://github.com/saieeshb/gensurg-funnel">Source</a>
+      <button class="theme-btn" id="theme" type="button">Dark</button>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+<!-- ============ TITLE BLOCK + THE INSTRUMENT ============ -->
+<section class="wrap titleblock">
+  <h1>Where the General Surgery funnel actually narrows</h1>
+  <p class="thesis">
+    Two cycles of the crowdsourced applicant spreadsheets, parsed end to end: 361 applicants who
+    reported what happened to them, and 1,154 individual interview invitations. The cycle is a
+    funnel, and every decision you control acts on exactly one stage of it.
+  </p>
+  <div class="provenance grad-label">
+    <span><b class="num" data-val="meta.applicants_2425"></b> applicants, 2024–25</span>
+    <span><b class="num" data-val="meta.invites_2526"></b> invites, 2025–26</span>
+    <span><b class="num" data-val="meta.programs_2526"></b> programmes</span>
+    <span><b class="num">~5–6%</b> of national invite volume</span>
+  </div>
+</section>
+
+<section class="wrap">
+  <div class="instrument">
+    <div class="instrument-head">
+      <div>
+        <h2 style="font-size:1.15rem">The median path through a cycle</h2>
+        <p class="grad-label" style="margin:.4rem 0 0">2024–25 · applicants reporting all three stages</p>
+      </div>
+      <p class="grad-label" style="margin:0">n = <span class="num" data-val="funnel.spine_n"></span></p>
+    </div>
+    <figure>
+      <div class="chart chart--wide" id="fig-funnel"></div>
+      <figcaption>
+        All three counts are drawn on one shared axis, so the narrowing is literally to scale. The
+        grey band is the middle half of applicants; the vermilion line is the median. The outcome
+        bar is a proportion, not a count, and is drawn on its own scale — it reports the
+        <span class="num" data-val="match_stats.n"></span> applicants who came back and said what
+        happened. Interview attendance is high once an invite lands
+        (<span class="num" data-val="funnel.attend_rate"></span>% of invites are taken up), so the
+        decisive narrowing happens earlier, between applications and invites.
+      </figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ============ STAGE 01 — APPLICATIONS ============ -->
+<section class="wrap stage" id="applications">
+  <div class="stage-head">
+    <p class="stage-mark">STAGE 01</p>
+    <h2>Applications: past about sixty, you are buying nothing</h2>
+    <p class="lede">
+      The first stage is the one applicants over-invest in most, and it is the only stage where
+      spending more money reliably makes the numbers worse.
+    </p>
+  </div>
+
+  <div class="verdict">
+    <p class="grad-label">Verdict</p>
+    <p>
+      Applying to more programmes does not get you more interviews. Across 346 applicants, the
+      correlation between applications sent and interviews received is
+      <strong>negative</strong> (ρ = <span class="num" data-val="yield_stats.rho_apps_ii" data-dp="3"></span>),
+      and the correlation with hit rate is strongly negative
+      (ρ = <span class="num" data-val="yield_stats.rho_apps_yield" data-dp="3"></span>). Below 60 applications
+      each additional ten buys about <strong>+1.9 interviews</strong>. Between 61 and 120 the
+      marginal return is <strong>zero</strong>.
+    </p>
+    <div class="verdict-meta">
+      <span>n = 346 applicants</span>
+      <span>Spearman ρ, <code>p &lt; 10⁻³⁰</code></span>
+      <span><a href="methods.html#confounding">This is confounded — read how</a></span>
+    </div>
+  </div>
+
+  <figure class="figure">
+    <h3>Hit rate collapses as the application list grows</h3>
+    <p class="sub">Median share of applications that produced an interview invitation, by how many were sent.</p>
+    <div class="chart chart--wide" id="fig-yield"></div>
+    <figcaption>
+      The causation runs both ways and the data cannot separate them: weaker applicants apply more
+      broadly <em>because</em> they expect a low hit rate. What the chart does establish is that
+      the broad-application strategy does not rescue them — the 120+ group sends more than twice
+      the median list and ends with fewer interviews than the 40–59 group.
+    </figcaption>
+  </figure>
+
+  <div class="caution">
+    <p class="grad-label">What this does not say</p>
+    <p>
+      It does not say that cutting your list to 40 programmes will raise your hit rate. Your hit
+      rate is mostly a property of your application, not of your list length. It says that the
+      marginal application past roughly sixty is close to worthless, and the money and effort it
+      costs are better spent on the things Stage 02 rewards.
+    </p>
+  </div>
+</section>
+
+<!-- ============ STAGE 02 — INVITES ============ -->
+<section class="wrap stage" id="invites">
+  <div class="stage-head">
+    <p class="stage-mark">STAGE 02</p>
+    <h2>Invites: this is where the cycle is decided</h2>
+    <p class="lede">
+      Between 75 applications and 14 invites sits the only filter that matters. Four things move
+      it, and they are not the four things applicants talk about most.
+    </p>
+  </div>
+
+  <div class="verdict">
+    <p class="grad-label">Verdict</p>
+    <p>
+      Signals are the strongest lever you control, and they are worth roughly
+      <strong>3.9× on the odds</strong> of an invitation. But a signal amplifies a strong
+      application rather than rescuing a weak one: signal conversion rises steeply with Step 2 CK,
+      from <strong>4.0 of 15</strong> below 240 to <strong>9.1 of 15</strong> above 270.
+    </p>
+    <div class="verdict-meta">
+      <span>Tier-matched odds ratio 3.85</span>
+      <span>95% CI 1.77–8.35</span>
+      <span><a href="methods.html#denominator">How the denominator was recovered</a></span>
+    </div>
+  </div>
+
+  <div>
+    <figure class="figure">
+      <h3>What fifteen signals actually bought</h3>
+      <p class="sub">2024–25 applicants, self-reported conversion of programme signals into interview invitations.</p>
+      <div class="chart chart--wide" id="fig-signal-dist"></div>
+      <figcaption>
+        Mean <span class="num" data-val="signal_stats.mean" data-dp="2"></span> of 15
+        (<span class="num" data-val="signal_stats.pct"></span>%).
+        <span class="num" data-val="signal_stats.zero_pct"></span>% converted none at all;
+        <span class="num" data-val="signal_stats.ten_plus_pct"></span>% converted ten or more.
+        This column existed in the workbook but was unreadable: Google Sheets had silently
+        coerced entries like <code>7/15</code> into dates. Recovering it is what makes this
+        chart possible.
+      </figcaption>
+    </figure>
+
+    <figure class="figure">
+      <h3>Signals amplify a score; they do not replace one</h3>
+      <p class="sub">Mean signals converted, of 15, by Step 2 CK band.</p>
+      <div class="chart chart--wide" id="fig-signal-score"></div>
+      <figcaption>
+        r = <span class="num" data-val="signal_score_corr.r" data-dp="3"></span>,
+        n = <span class="num" data-val="signal_score_corr.n"></span>, p &lt; 10⁻⁵. A 270 applicant
+        converts more than twice as many signals as a sub-240 applicant. The common advice that
+        signals let a lower scorer punch above their weight is not what the data shows.
+      </figcaption>
+    </figure>
+  </div>
+
+  <figure class="figure">
+    <h3>Signal value scales with how badly a programme is wanted</h3>
+    <p class="sub">Share of invitees who had signalled, by how many applicants ranked the programme.</p>
+    <div class="chart chart--wide" id="fig-tier"></div>
+    <figcaption>
+      A 25-point gradient (bootstrap 95% CI 8.6–39.4 pp over 4,000 programme-cluster resamples;
+      it survives dropping the release day, and survives Holm correction). At the most sought-after
+      programmes three quarters of everyone invited had signalled — <strong>without a signal you
+      are competing for the remaining quarter of the seats.</strong>
+    </figcaption>
+  </figure>
+
+  <blockquote class="pd">
+    <p>“For our program, no change in the number of interviews. However, it looks like a greater
+      fraction of our invites are going to students that signaled. We had more students signal
+      than interview spots.”</p>
+    <cite>Program director · PCPD Q&amp;A tab, 2025–26 workbook</cite>
+  </blockquote>
+
+  <figure class="figure">
+    <h3>The season is essentially one day long</h3>
+    <p class="sub">Reported interview invitations per day, 25 September 2025 – 23 January 2026.</p>
+    <div class="chart chart--wide" id="fig-timeline"></div>
+    <figcaption>
+      <span class="num" data-val="timeline_stats.peak_share"></span>% of the entire season's
+      invitations landed on Wednesday 22 October 2025 — the release date recommended by the
+      Association of Program Directors in Surgery — across
+      <span class="num" data-val="timeline_stats.peak_programs"></span> programmes at once.
+      Wednesdays alone carried <span class="num" data-val="timeline_stats.wed_share"></span>% of
+      the year. Note the tail: invitations kept arriving into January.
+    </figcaption>
+  </figure>
+
+  <div class="caution">
+    <p class="grad-label">If you are at zero on release day</p>
+    <p>
+      Signal share among invitees peaks at 60.6% during release week and falls to 27.8% by
+      mid-November. Unsignalled invitations disproportionately arrive <em>off</em> the peak. A
+      quiet 21 October is not the verdict it feels like, and the season runs another three months.
+    </p>
+  </div>
+
+  <figure class="figure">
+    <h3>What separates a signalled invitee from an unsignalled one</h3>
+    <p class="sub">Logistic model over 1,093 invitations, standard errors clustered by programme.</p>
+    <div class="chart chart--wide" id="fig-invite-model"></div>
+    <figcaption>
+      Filled marks are distinguishable from no effect; hollow marks are not. Two things stand out.
+      An <strong>away rotation</strong> travels with a signal almost always — 86% of away-rotators
+      also signalled that programme. A <strong>home programme</strong> does not: home-programme
+      invitees signalled at exactly the base rate, which means a signal spent at home is a signal
+      wasted. Step 2 CK does not separate the two groups at all, because it has already done its
+      work at the screening stage.
+    </figcaption>
+  </figure>
+
+  <div class="grid-2">
+    <figure class="figure">
+      <h3>Preliminary and categorical are different markets</h3>
+      <p class="sub">2025–26 invitations, by track.</p>
+      <table>
+        <caption>IMG share of invitations, by track</caption>
+        <thead><tr><th>Track</th><th>Invites</th><th>IMG share</th></tr></thead>
+        <tbody>
+          <tr><td>Categorical</td><td class="n" data-val="prelim.cat_n"></td><td class="n"><span data-val="prelim.cat_img_pct"></span>%</td></tr>
+          <tr class="is-index"><td>Preliminary</td><td class="n" data-val="prelim.prelim_n"></td><td class="n"><span data-val="prelim.prelim_img_pct"></span>%</td></tr>
+        </tbody>
+      </table>
+      <figcaption>
+        χ² = 318, p ≈ 3×10⁻⁷¹. Preliminary invitees also carry <em>higher</em> median Step 2 (265
+        vs 255) and far weaker geographic ties (46% vs 76%) — the signature of a market where a
+        strong score does not convert into a categorical seat.
+      </figcaption>
+    </figure>
+
+    <figure class="figure">
+      <h3>Geography is a filter, and it is not the same filter for everyone</h3>
+      <p class="sub">Share of invitees with a stated geographic tie to the programme that invited them.</p>
+      <table>
+        <caption>Geographic tie among invitees, by pathway</caption>
+        <thead><tr><th>Pathway</th><th>Invites</th><th>Geographic tie</th></tr></thead>
+        <tbody id="geo-rows"></tbody>
+      </table>
+      <figcaption>
+        χ² = 42.1, p &lt; 10⁻⁶. Overall
+        <span class="num" data-val="composition.geo"></span>% of invitees had a tie to the region.
+        Non-US IMGs are the exception at 46% — not because geography matters less to them, but
+        because they cannot afford to be selective.
+      </figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ============ STAGE 03/04 — INTERVIEWS AND MATCH ============ -->
+<section class="wrap stage" id="match">
+  <div class="stage-head">
+    <p class="stage-mark">STAGE 03 — 04</p>
+    <h2>Interviews and the match: the count is nearly the whole story</h2>
+    <p class="lede">
+      By the time invitations are in hand, the outcome is close to determined. This is why Stage 02
+      deserves the effort that Stage 01 usually absorbs.
+    </p>
+  </div>
+
+  <div class="verdict">
+    <p class="grad-label">Verdict</p>
+    <p>
+      Interview count dominates every other measured factor: <strong>9.1× the odds</strong> of a
+      categorical match per five additional interviews. Applicants with ten or more invitations
+      matched categorical <strong>91%</strong> of the time; those with two or fewer,
+      <strong>0%</strong>.
+    </p>
+    <div class="verdict-meta">
+      <span>n = 178 with an outcome and an invite count</span>
+      <span>logistic, HC1 robust</span>
+      <span><a href="methods.html#outcome-bias">Outcome reporting is voluntary — read the caveat</a></span>
+    </div>
+  </div>
+
+  <figure class="figure">
+    <h3>Match outcome by interview count</h3>
+    <p class="sub">Share matching categorical, among 2024–25 applicants who reported both.</p>
+    <div class="chart chart--wide" id="fig-match"></div>
+    <figcaption>
+      The gradient is steep and monotone, but note what it is not: evidence that interviews
+      <em>cause</em> matching independent of the application that earned them. Both are downstream
+      of the same underlying strength. The usable reading is that interview count is the best
+      single summary of where you stand, available months before Match Day.
+    </figcaption>
+  </figure>
+
+  <figure class="figure">
+    <h3>What produces interviews in the first place</h3>
+    <p class="sub">Poisson model of interview count, <span class="num" data-val="poisson_n"></span> applicants, robust standard errors.</p>
+    <div class="chart chart--wide" id="fig-forest"></div>
+    <figcaption>
+      Step 2 CK is the strongest measured input — each ten points multiplies expected interviews by
+      <strong>1.22×</strong>. The IMG pathway carries a <strong>0.25×</strong> penalty, a
+      three-quarters reduction, holding score and everything else constant. And the one most
+      applicants over-weight: <strong>publications do nothing measurable</strong> (1.01×,
+      p = 0.85). Hollow marks are not distinguishable from no effect.
+    </figcaption>
+  </figure>
+</section>
+
+<!-- ============ TWO CYCLES ============ -->
+<section class="wrap stage" id="two-cycles">
+  <div class="stage-head">
+    <p class="stage-mark">ACROSS CYCLES</p>
+    <h2>What two years can and cannot tell you</h2>
+    <p class="lede">
+      The two workbooks record different things. Treating them as a time series would be the
+      easiest mistake to make with this data, so the comparisons below are limited to what is
+      genuinely comparable.
+    </p>
+  </div>
+
+  <div class="grid-2">
+    <figure class="figure">
+      <h3>Programme demand is only moderately stable</h3>
+      <p class="sub">Rank-list slots reported per programme, 314 programmes present in both cycles.</p>
+      <div class="chart" id="fig-demand"></div>
+      <figcaption>
+        Spearman ρ = <span class="num" data-val="demand_rho" data-dp="3"></span>. The broad ordering persists,
+        but only 9 of the top 25 programmes held their place. These are small counts driven by who
+        happened to fill in the sheet — read individual movements as reporting noise, not as
+        demand shifts.
+      </figcaption>
+    </figure>
+
+    <figure class="figure">
+      <h3>The interview filter, drawn as a distribution</h3>
+      <p class="sub">Step 2 CK: everyone who applied in 2024–25, against everyone who got an invite in 2025–26.</p>
+      <div class="chart" id="fig-step2"></div>
+      <figcaption>
+        These are different populations in different years, so the gap is the interview filter, not
+        year-over-year drift. The useful number is the left tail:
+        <span class="num" data-val="step2.stats.inv_below_250"></span>% of invitees scored below
+        250. The filter is real and it is not where most applicants think it is.
+      </figcaption>
+    </figure>
+  </div>
+
+  <div class="caution">
+    <p class="grad-label">The structural difference</p>
+    <p>
+      The <strong>2024–25</strong> workbook is applicant-level: it knows who you are, what you
+      scored, and what happened to you — but it has no dated invitation log, so it can say nothing
+      about timing. The <strong>2025–26</strong> workbook is invite-level: every invitation is
+      dated and attributed to a programme, but no invitation can be linked to an applicant and no
+      outcome is recorded. They complement each other. They do not stack.
+    </p>
+  </div>
+</section>
+
+<!-- ============ WHAT TO DO ============ -->
+<section class="wrap stage" id="do">
+  <div class="stage-head">
+    <p class="stage-mark">DECISIONS</p>
+    <h2>What to actually do differently</h2>
+    <p class="lede">
+      Ordered by how much the evidence supports them, with the evidence named. Where the data is
+      weak, it says so.
+    </p>
+  </div>
+
+  <div class="actions">
+    <div class="action">
+      <div>
+        <h3>Spend signals where you fit, not where you would be flattered to go</h3>
+        <p>
+          A signal is worth about 3.9× on the odds. At the most sought-after programmes 75% of
+          invitees had signalled, so an unsignalled application there competes for a quarter of the
+          seats. At programmes almost nobody signals, the same signal is a much rarer object.
+        </p>
+        <p class="evidence"><span>Tier-matched OR 3.85 (1.77–8.35)</span><span>25 pp tier gradient</span><a href="methods.html#denominator">Method</a></p>
+      </div>
+    </div>
+    <div class="action">
+      <div>
+        <h3>Do not spend a signal on your home programme</h3>
+        <p>
+          Home-programme invitees signalled at the base rate — 50.0% against 54.2% for everyone
+          else — with no visible penalty for skipping it. That is a free signal to redeploy.
+        </p>
+        <p class="evidence"><span>OR 0.85, p = 0.64</span><span>n = 1,142 invites</span><a href="methods.html#invite-model">Method</a></p>
+      </div>
+    </div>
+    <div class="action">
+      <div>
+        <h3>Stop adding programmes past about sixty</h3>
+        <p>
+          Marginal return falls from +1.9 interviews per ten applications to zero. Redirect the
+          fee money and the supplemental-essay hours into the applications you have already sent.
+        </p>
+        <p class="evidence"><span>ρ = −0.57 apps vs yield</span><span>n = 346</span><a href="methods.html#confounding">Confounding</a></p>
+      </div>
+    </div>
+    <div class="action">
+      <div>
+        <h3>If your score is your weak point, rotate rather than signal harder</h3>
+        <p>
+          Signals do not compensate for a low score — conversion falls with score, it does not rise.
+          An away rotation is different: at least one programme director in the workbook describes
+          keeping a shortlist for people who rotated there, exempt from score screening.
+        </p>
+        <p class="evidence"><span>r = +0.44 score vs conversion</span><span>PD testimony, not measured effect</span></p>
+      </div>
+    </div>
+    <div class="action">
+      <div>
+        <h3>Treat publications as the lowest-yield thing on your list</h3>
+        <p>
+          Holding score, pathway, AOA and class rank constant, publication count has no measurable
+          effect on interview count. This is the clearest gap between what applicants optimise and
+          what the data rewards.
+        </p>
+        <p class="evidence"><span>IRR 1.01 (0.93–1.09), p = 0.85</span><span>n = 337</span><a href="methods.html#power">Power caveat</a></p>
+      </div>
+    </div>
+    <div class="action">
+      <div>
+        <h3>Send the letter of intent; expect nothing from it</h3>
+        <p>
+          34% of letters got any response at all and 30% were personalised. Two independent tallies
+          in the workbooks agree. It is cheap to send and near-useless as a read on where you stand.
+        </p>
+        <p class="evidence"><span>42 of 122 responded</span><span>two independent tabs agree</span></p>
+      </div>
+    </div>
+    <div class="action">
+      <div>
+        <h3>If you are a non-US IMG, weight research and advocacy over signals</h3>
+        <p>
+          Signal conversion for IMGs was 2.4 of 15 against 6.5 for US MDs. The applicant in the
+          workbook who reported six categorical invitations with zero signal conversions credited
+          research volume and mentors making calls on their behalf.
+        </p>
+        <p class="evidence"><span>2.4 vs 6.5 of 15, p &lt; 0.001</span><span>n = 15 IMGs — small</span></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PROJECTION ============ -->
+<section class="wrap stage" id="projection">
+  <div class="stage-head">
+    <p class="stage-mark">2026 — 27</p>
+    <h2>What to expect this cycle</h2>
+    <p class="lede">
+      The 2026–27 tabs were still empty when this was written. These are projections from the
+      2025–26 calendar, and they are falsifiable on purpose.
+    </p>
+  </div>
+
+  <div class="cal">
+    <div class="cal-row">
+      <time datetime="2026-09-23">23 Sep 2026</time>
+      <strong>Programmes gain ERAS access</strong>
+      <span class="note">first invitations followed within a day last cycle</span>
+    </div>
+    <div class="cal-row is-key">
+      <time datetime="2026-10-21">21 Oct 2026</time>
+      <strong>Projected universal release date</strong>
+      <span class="note">Wednesday · access + 28 days</span>
+    </div>
+    <div class="cal-row">
+      <time datetime="2026-10-28">28 Oct 2026</time>
+      <strong>Alternative release date</strong>
+      <span class="note">if APDS anchors to the 4th Wednesday instead</span>
+    </div>
+    <div class="cal-row">
+      <time datetime="2026-11-04">4 Nov 2026</time>
+      <strong>≈90% of invitations landed</strong>
+      <span class="note">by the equivalent day last cycle</span>
+    </div>
+    <div class="cal-row">
+      <time datetime="2027-03-20">20 Mar 2027</time>
+      <strong>Match Day</strong>
+      <span class="note">from the workbook's own countdown</span>
+    </div>
+  </div>
+
+  <div class="caution">
+    <p class="grad-label">Why two candidate dates</p>
+    <p>
+      22 October 2025 satisfies both plausible rules — “programme access + 28 days” and “the fourth
+      Wednesday of October” — so last cycle cannot distinguish them. In 2026 they diverge by a week.
+      Confirm against the APDS statement and the AAMC ERAS 2027 calendar before planning around
+      either.
+    </p>
+  </div>
+
+  <h3 style="margin:2.5rem 0 0;font-size:1.06rem">Ten predictions, checkable against next year's sheet</h3>
+  <ol class="ledger">
+    <li><span>P1</span><span>The busiest single day carries more than 25% of all reported invitations.<span class="basis">35.4% in 2025–26</span></span></li>
+    <li><span>P2</span><span>That day is a Wednesday in the third or fourth week of October.<span class="basis">Wednesdays held 45.4% of the season</span></span></li>
+    <li><span>P3</span><span>At least half of all invitations land within seven days of the release date.<span class="basis">50% by release day last cycle</span></span></li>
+    <li><span>P4</span><span>Signalled share of invitees lands between 55% and 62%.<span class="basis">53.8%, trending up</span></span></li>
+    <li><span>P5</span><span>The signal gap between most- and least-sought programmes stays above 15 points.<span class="basis">24.8 pp, bootstrap CI excludes zero</span></span></li>
+    <li><span>P6</span><span>Median Step 2 CK among invitees is 255–260.<span class="basis">255 last cycle; ~1 pt/yr national drift</span></span></li>
+    <li><span>P7</span><span>IMGs remain over half of preliminary invitations and under 15% of categorical.<span class="basis">78% and 8%</span></span></li>
+    <li><span>P8</span><span>Geographic-tie share of invitees stays between 70% and 78%.<span class="basis">73.9%</span></span></li>
+    <li><span>P9</span><span>Letter-of-intent response rate stays under 50%, personalised under 35%.<span class="basis">34% and 30%</span></span></li>
+    <li><span>P10</span><span>Interview-drop activity peaks two to four weeks after the release date.<span class="basis">drops clustered late Oct–Nov</span></span></li>
+  </ol>
+</section>
+
+<!-- ============ LIMITS ============ -->
+<section class="wrap stage" id="limits">
+  <div class="stage-head">
+    <p class="stage-mark">LIMITS</p>
+    <h2>What this data cannot do</h2>
+    <p class="lede">Read this before you use any number above to make a decision.</p>
+  </div>
+  <p>
+    Both workbooks are voluntary and self-reported. People post when something happens, so
+    non-events are invisible: an applicant with fifteen invitations can post fifteen times, one
+    with none posts never. Together the two cycles capture roughly <strong>5–6%</strong> of
+    national General Surgery interview volume. <strong>No absolute national rate can be computed
+    from them</strong>, which is why the findings above are comparisons within the data rather than
+    levels.
+  </p>
+  <p>
+    Records are also not independent — one programme contributes up to 26 invitations, all filtered
+    by a single committee's rule. The intraclass correlation is 0.415, which means the effective
+    sample size is about <strong>465, not 1,154</strong>. Every model above uses
+    programme-clustered standard errors for this reason. And this dataset cannot see effects
+    smaller than about 10 percentage points, so every null result here is a bound, not a proof of
+    absence.
+  </p>
+  <p style="margin-top:1.5rem">
+    <a href="methods.html" style="font-weight:600">Read the full methodology, bias analysis and model tables →</a>
+  </p>
+</section>
+
+</main>
+
+<footer class="foot">
+  <div class="wrap foot-in">
+    <div>
+      <h4>Sources</h4>
+      <ul>
+        <li><a href="data/2024-2025%20Residency%20Application%20Spreadsheet.xlsx">2024–25 workbook (.xlsx)</a></li>
+        <li><a href="data/Official%202026-2027%20Gen%20Surgery%20Spreadsheet.xlsx">2025–26 / 2026–27 workbook (.xlsx)</a></li>
+        <li><a href="assets/site.json">Every published figure (JSON)</a></li>
+        <li><a href="report.md">Full written report (Markdown)</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Reproduce</h4>
+      <ul>
+        <li><a href="https://github.com/saieeshb/gensurg-funnel">Repository</a></li>
+        <li><a href="https://github.com/saieeshb/gensurg-funnel/tree/main/analysis">Analysis scripts</a></li>
+        <li><a href="methods.html#reproduce">How to re-run it</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Pages</h4>
+      <ul>
+        <li><a href="./">Findings</a></li>
+        <li><a href="img.html">IMG analysis</a></li>
+        <li><a href="methods.html">Methods &amp; limits</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Colophon</h4>
+      <p class="colophon">
+        Analysis and site by Saieesh. Data belongs to the General Surgery applicant community that
+        built the original spreadsheets. Set in Public Sans and Spline Sans Mono. No trackers, no
+        cookies, no analytics.
+      </p>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/data.js"></script>
+<script src="assets/charts.js"></script>
+<script>
+/* geo table is small enough to fill inline from the same data file */
+(() => {
+  const t = document.getElementById('geo-rows');
+  if (!t || !window.SITE) return;
+  const order = { 'DO': 0, 'MD': 1, 'US IMG': 2, 'Non-US IMG': 3 };
+  t.innerHTML = window.SITE.geo_by_degree
+    .slice().sort((a, b) => (order[a.deg] ?? 9) - (order[b.deg] ?? 9))
+    .map(r => `<tr${r.deg === 'Non-US IMG' ? ' class="is-index"' : ''}><td>${r.deg}</td><td class="n">${r.n}</td><td class="n">${r.pct}%</td></tr>`)
+    .join('');
+})();
+</script>
+</body>
+</html>

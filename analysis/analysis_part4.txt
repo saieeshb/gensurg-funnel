@@ -1,0 +1,225 @@
+
+============================================================================================
+== 19. DATA CLEANING ON THE 24-25 APPLICANT FILE
+============================================================================================
+implausible Step 2 values (<180): 5 -> [23.0, 24.0, 25.0, 25.0, 26.0]  [dropped]
+application counts >300: 2 -> [340, 343]  [kept, plausible for IMGs]
+yield >1.0 (more invites than applications): 0  [none expected]
+
+usable applicant records: 361
+  with Step 2: 352 | with apps+IIs: 346 | with signal yield: 254 | with outcome: 185
+
+============================================================================================
+== 20. THE DIRECT MEASUREMENT: WHAT 15 SIGNALS ACTUALLY BUY
+============================================================================================
+n = 254 applicants reporting signal yield out of 15
+  mean 6.24/15 converted (41.6%)
+  median 6/15 | IQR 3-9
+
+  distribution of signals converted:
+     0/15   10  ######
+     1/15   19  ############
+     2/15   12  ########
+     3/15   24  ################
+     4/15   15  ##########
+     5/15   31  ####################
+     6/15   27  ##################
+     7/15   23  ###############
+     8/15   26  #################
+     9/15   18  ############
+    10/15   17  ###########
+    11/15   14  #########
+    12/15    6  ####
+    13/15    5  ###
+    14/15    5  ###
+    15/15    2  #
+
+  applicants converting ZERO signals: 10 (3.9%)
+  converting >=10: 49 (19.3%)
+
+--- 20a. Signal conversion by pathway ---
+     size  mean  median  pct_of_15
+deg                               
+DO     42  6.36     7.0      42.38
+IMG    15  2.40     1.0      16.00
+MD    196  6.51     6.0      43.40
+  MD vs IMG: 6.51 vs 2.40 signals converted, Mann-Whitney p=0.0000
+  MD vs DO : 6.51 vs 6.36, p=1.0000
+
+--- 20b. Does the signal conversion rate depend on your score? ---
+  corr(Step 2, signals converted) = +0.444, p=0.00000, n=248
+         size  mean
+band               
+<240       47  4.04
+240-249    57  5.70
+250-259    76  6.41
+260-269    50  7.94
+270+       18  9.11
+
+============================================================================================
+== 21. THE YIELD CURVE — does applying to more programs help?
+============================================================================================
+n = 346 applicants with both application and invite counts
+  applications: median 80, IQR 55-122, max 343
+  invites     : median 11, IQR 3-16, max 34
+  yield       : median 13.1%, IQR 3.6-24.2%
+
+         n  med_apps  med_ii  mean_ii  med_yield
+band                                            
+<40     35      32.0     9.0     8.57       30.0
+40-59   69      51.0    13.0    12.54       24.5
+60-79   80      70.0    13.0    12.72       18.5
+80-119  75      97.0    12.0    12.04       13.1
+120+    87     170.0     7.0     7.55        3.5
+
+  Spearman corr(applications, invites) = -0.154, p=0.00417
+  Spearman corr(applications, YIELD)   = -0.572, p=1.69e-31   <-- the important one
+  More applications buys a LOWER hit rate. The marginal application is going to a program
+  that fits you worse, and the invite count barely moves.
+
+--- 21a. Marginal return: invites gained per 10 extra applications ---
+  <=60 apps    n=104  slope = +1.91 invites per 10 applications
+  61-120 apps  n=155  slope = -0.30 invites per 10 applications
+  >120 apps    n= 87  slope = +0.08 invites per 10 applications
+
+============================================================================================
+== 22. WHAT PREDICTS AN INTERVIEW  (applicant-level, 24-25)
+============================================================================================
+Poisson model of INTERVIEW COUNT (HC1 robust SEs), n=337
+            IRR     lo     hi      p
+const     5.012  2.760  9.101  0.000
+score_c   1.224  1.151  1.302  0.000
+is_img    0.251  0.165  0.381  0.000
+aoa_i     1.169  0.993  1.375  0.060
+honors_i  1.217  1.039  1.427  0.015
+pubs_c    1.008  0.934  1.087  0.845
+q1        0.921  0.778  1.090  0.337
+logapps   1.185  1.044  1.345  0.009
+
+  IRR = multiplicative effect on expected number of interviews.
+  score_c is per 10 Step 2 points; pubs_c is per log-unit of publications;
+  logapps is per log-unit of applications sent.
+
+============================================================================================
+== 23. WHAT PREDICTS MATCHING  (the outcome nobody else in this sheet has)
+============================================================================================
+applicants reporting an outcome: 185 of 361 (51%)
+status
+Categorical    121
+Unmatched       43
+Preliminary     21
+
+CAUTION: outcome reporting is voluntary and post-hoc. People who match are more likely to
+return and update the sheet, but people who do not match also come back to ask for advice.
+Direction of bias is genuinely unclear, so read these as within-sample contrasts.
+
+       n  pct_categorical
+deg                      
+DO    25             68.0
+IMG   15             13.3
+MD   145             70.3
+
+By interview count — the single strongest gradient in either workbook:
+          n  pct_cat
+iiband              
+0        39      0.0
+1-2       5      0.0
+3-5      10     40.0
+6-9      15     73.3
+10+     113     91.2
+
+  <=5 invites: 7.4% categorical (n=54)
+  >=10 invites: 91.2% categorical (n=113)
+  z=-10.55, p=5.05e-26
+
+Logistic model of categorical match:
+            OR     lo      hi      p
+const    0.023  0.005   0.111  0.000
+ii_c     9.075  4.709  17.491  0.000
+score_c  0.580  0.366   0.918  0.020
+is_img   0.581  0.054   6.306  0.655
+is_do    0.444  0.089   2.208  0.321
+aoa_i    6.762  1.695  26.983  0.007
+  n=178. ii_c is per 5 interviews.
+  Interview count dominates: OR 9.1 per 5 interviews.
+  Step 2 flips NEGATIVE once interview count is held fixed (OR 0.58, p=0.02).
+  Do not read that as "a higher score hurts". It is collider stratification: conditioning
+  on interview count compares a 270 who got 8 interviews against a 240 who got 8, and the
+  270 who only managed 8 has something else going wrong (or aimed at harder programs).
+  The causal path for score runs THROUGH interview count, which the Poisson model above
+  already measured at IRR 1.22 per 10 points.
+
+============================================================================================
+== 24. TWO-YEAR COMPARISON
+============================================================================================
+--- 24a. What each cycle actually recorded ---
+  2024-25 workbook: APPLICANT-level. 361 applicants, outcomes, yields, signal conversion.
+                    No date-stamped invite log -> no timing analysis possible.
+  2025-26 workbook: INVITE-level. 1154 invites across 315 programs,
+                    with dates -> timing analysis possible. No applicant IDs, no outcomes.
+  The two are complementary, not comparable head-to-head on most fields.
+
+--- 24b. Directly comparable: Step 2 distribution ---
+  24-25 APPLICANTS  (n=352): median 253, IQR 243-261, mean 251.5
+  25-26 INVITEES    (n=1141): median 255, IQR 255-265, mean 257.4
+  NOT the same population: one is everyone who applied, the other is people who got invited.
+  The ~5 point gap is the selection effect of the interview filter, not year-over-year drift.
+
+  24-25 applicants WITH >=1 invite (n=299): median 253, mean 252.4
+  -> like-for-like against 25-26 invitees (255): difference +2 points
+
+--- 24c. Directly comparable: program desirability (RANK SPOTS both years) ---
+  24-25: 321 programs, 1242 rank slots, 248 #1 ranks
+  25-26: 328 programs, 1110 rank slots, 249 #1 ranks
+  programs present in both: 314
+  Spearman corr of demand across years = +0.552 (p=1.98e-26)
+  Moderately stable — the broad ordering persists, but see the top-25 churn below before
+  treating any single programme's movement as real.
+
+  Biggest movers (rank-slot count). READ WITH CARE: rank slots are small counts driven by
+  who happened to fill in the sheet, so most of this is reporting noise, not demand shift.
+  UCLA going 30 -> 6 is far more likely a collapse in respondents than a collapse in demand.
+  RISERS:
+                                        name state  n_rank_24  n_rank_25  delta
+            Bayhealth Medical Center Program    DE        2.0       14.0   12.0
+Mayo Clinic College of Medicine and Scien...    FL       16.0       28.0   12.0
+      Ohio State University Hospital Program    OH        5.0       17.0   12.0
+Washington University/B-JH/SLCH Consortiu...    MO        0.0       12.0   12.0
+               University of Florida Program    FL        2.0       12.0   10.0
+                   Howard University Program    DC        2.0       12.0   10.0
+Indiana University School of Medicine Pro...    IN        6.0       16.0   10.0
+University of North Carolina Hospitals Pr...    NC        9.0       17.0    8.0
+  FALLERS:
+                                        name state  n_rank_24  n_rank_25  delta
+University of California (Los Angeles) Me...    CA       30.0        6.0  -24.0
+          Baylor College of Medicine Program    TX       28.0       13.0  -15.0
+University of Kansas School of Medicine P...    KS       15.0        3.0  -12.0
+        Brigham and Women's Hospital Program    MA       15.0        4.0  -11.0
+University of Southern California/LAC+USC...    CA       13.0        2.0  -11.0
+University of Tennessee Medical Center at...    TN       13.0        4.0   -9.0
+        George Washington University Program    DC       12.0        4.0   -8.0
+  Oregon Health & Science University Program    OR       13.0        5.0   -8.0
+
+  Overlap of the top-25 most-ranked programs across years: 9/25
+
+--- 24d. Gini of demand, both years ---
+  24-25: Gini 0.505 | top-25 programs hold 28.4% of demand
+  25-26: Gini 0.533 | top-25 programs hold 31.1% of demand
+
+============================================================================================
+== 25. HEADLINE NUMBERS FOR THE SITE
+============================================================================================
+  applicants_2425          361
+  invites_2526             1154
+  programs_2526            315
+  sig_mean                 6.24
+  sig_pct                  41.6
+  sig_zero_pct             3.9
+  median_apps              79
+  median_ii                11
+  median_yield             13.1
+  yield_vs_apps_rho        -0.572
+  release_day_share        35.4
+  signal_or                3.85
+  tier_gap_pp              24.8
+  demand_stability_rho     0.552

@@ -1,0 +1,140 @@
+
+==========================================================================================
+== IMG-1. INVITE COMPOSITION (2025-26, invite-level)
+==========================================================================================
+  DO             154 invites   13.3%
+  MD             825 invites   71.5%
+  Non-US IMG      83 invites    7.2%
+  US IMG          63 invites    5.5%
+
+Non-US IMG invites: 83 (7.2% of all reported invites)
+
+--- categorical vs prelim, by pathway ---
+            categorical  prelim  % prelim
+grp                                      
+DO                  152       2       1.3
+MD                  809      16       1.9
+Non-US IMG           36      47      56.6
+US IMG               47      16      25.4
+
+  A Non-US IMG invite is 30x more likely to be a prelim invite than an MD's.
+
+--- attributes of Non-US IMG invitees vs everyone else ---
+            invites  %signal  %geo  %home  %away  median_step2  %>=260
+group                                                                 
+MD              825     53.6  74.7    4.3    4.1         255.0    44.9
+DO              154     56.6  84.1    0.6   16.9         255.0    32.5
+US IMG           63     54.0  69.8    4.9   14.3         255.0    28.6
+Non-US IMG       83     50.6  45.7    1.2   10.8         265.0    57.8
+
+--- the score paradox ---
+  Non-US IMG invitees: median 265, 57.8% at 260+
+  US MD invitees     : median 255, 44.9% at 260+
+  Mann-Whitney p=0.00004  -> Non-US IMGs who get invited score HIGHER than MDs who get invited.
+  The bar is not equal. Same invite, more score required.
+
+--- geography: the tell ---
+  MD           geo tie on  74.7% of invites (n=815)
+  DO           geo tie on  84.1% of invites (n=151)
+  US IMG       geo tie on  69.8% of invites (n=63)
+  Non-US IMG   geo tie on  45.7% of invites (n=81)
+  Non-US IMGs take invites where they can get them, not where they want to be.
+
+==========================================================================================
+== IMG-2. OUTCOMES (2024-25, applicant-level)
+==========================================================================================
+IMG applicants in the 2024-25 file: 30  (the sheet does not split US / non-US here)
+  with Step 2: 30 | with apps+IIs: 30 | signal yield: 15 | outcome: 15
+
+--- applications, invites, yield ---
+  IMG  n= 30 | median apps   137 | median invites  1.0 | median yield   1.2%
+  MD   n=255 | median apps    74 | median invites 12.0 | median yield  15.6%
+  DO   n= 60 | median apps    97 | median invites 13.0 | median yield  13.0%
+  IMG vs MD yield: 1.2% vs 15.6%, p=3.26e-09
+
+--- signal conversion, the direct measurement ---
+  IMG: n=15, mean 2.40/15 (16.0%), median 1
+  MD : n=196, mean 6.51/15 (43.4%)
+  DO : n=42, mean 6.36/15
+  IMG vs MD: p=0.00003
+  IMG converting ZERO of 15: 1/15 = 7%
+  MD  converting ZERO of 15: 8/196 = 4%
+
+--- outcomes ---
+  IMG with a reported outcome: 15
+status
+Unmatched      7
+Preliminary    6
+Categorical    2
+  IMG  categorical  13.3%  prelim  40.0%  unmatched  46.7%  (n=15)
+  MD   categorical  70.3%  prelim   8.3%  unmatched  21.4%  (n=145)
+  DO   categorical  68.0%  prelim  12.0%  unmatched  20.0%  (n=25)
+
+--- what an IMG needed to bring, vs an MD ---
+         n  median_step2  median_pubs  mean_pubs  median_apps
+group                                                        
+IMG     30         253.5          9.0       16.0        137.0
+MD     269         253.0          6.0       11.0         74.0
+  publications IMG vs MD: p=3.26e-02
+
+--- what predicts interview count WITHIN the IMG group ---
+           IRR     lo      hi      p
+const    1.291  0.110  15.195  0.839
+score_c  1.635  1.182   2.261  0.003
+pubs_c   0.931  0.639   1.356  0.709
+logapps  1.146  0.709   1.853  0.578
+  n=30 — small; treat as descriptive.
+
+==========================================================================================
+== IMG-3. THE DEDICATED IMG TAB (2025-26)
+==========================================================================================
+structured IMG invite rows: 84
+  signalled: 47/84 = 56.0%
+  research year: 55/84 = 65.5%
+  cat vs prelim: {'cat': 44, 'prelim': 39}
+  research year x signalled: Fisher OR=0.85, p=0.819 (no association)
+
+  programmes inviting the most IMGs:
+program
+JFK Medical Center NJ         9
+Johns Hopkins University      5
+BIDMC                         3
+UCF Ocala                     2
+Mercy St Vincent OH           2
+Baylor College of Medicine    2
+Mayo Jacksonville             2
+Cleveland,Ohio                2
+UPenn                         2
+HF Providence                 2
+
+  programmes appearing most in Non-US IMG invites (main log):
+    Mayo Clinic Rochester                          8
+    Cleveland Clinic                               4
+    Mayo Clinic Florida                            4
+    JFK Medical Center (NJ)                        4
+    Wyckoff                                        3
+    BIDMC                                          3
+    UTSW ( - Part 2)                               3
+    UCF Ocala                                      2
+    University of South Florida ().                2
+    Johns Hopkins                                  2
+    Jefferson Einstein Philadelphia Hospital       2
+    NYU                                            2
+
+==========================================================================================
+== IMG-4. VERBATIM FROM THE IMG CHAT TABS
+==========================================================================================
+  • Imgs currently doing prelim how many cat invites did u get this cycle?
+  • Any info on Lenox Hill? Is it a good program? < for prelim? Overall is it a good program?
+  • Since invites are basically over for the season how did you guys do cat and prelim #? +1
+  • No IVs>1 cat 8 prelim >> congrats! carribian img?>thanks, pakistani img
+  • 15 IVs non-us IMG, mix between cats and prelims +1>research year in the US? > yes
+  • any programs that are known to send prelim ii that havent yet ? +2
+  • Has anyone got a prelim invite from NYP columbia ??
+  • Can anyone who did a transitional year and then matched into a prelim GS position share their experience? I am conflicted should I be doing another year of research or transitional year if I dont match GS this year? Thank you in advance!!
+  • is transiotional year diffrent than prelim? < TY you will learn a little bit of everything vs. Prelim GS is only surgery, you will receive the same education and opportunities compared with categorical residents. To answer the OP question, take the TY because it will provide you not only training in
+  • is it true that prelim puts you in a worse spot next year? is it better to just rank cat then do a 2nd research year insead
+  • Very program dependent. Some programs will seriously consider the prelims for a catergorical position and others will tell you they will but don't really. Try and figure out if theres any former prelims in categorical positions at that program and that should let you know which type of program you'r
+  • I got 0 categorical invites last year and matched prelim, this year I have 6 categorical invites and my home program usually takes a prelim a year for a categorical spot so at least for me seems like I'm in a better spot
+  • thanks how many prelims did you get last year?
+  • any opening at the University of Maryland prelim?
