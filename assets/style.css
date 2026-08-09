@@ -10,7 +10,7 @@
   --panel-sunk:   #F4F3F0;
   --ink:          #15181B;
   --ink-2:        #4C535A;
-  --ink-3:        #767D85;
+  --ink-3:        #686E75;
   --rule:         #DCDAD5;
   --rule-2:       #ECEAE6;
   --grad:         #C3C0BA;
@@ -56,7 +56,7 @@
 }
 :root[data-theme="light"] {
   --paper: #FBFAF8; --panel: #FFFFFF; --panel-sunk: #F4F3F0;
-  --ink: #15181B; --ink-2: #4C535A; --ink-3: #767D85;
+  --ink: #15181B; --ink-2: #4C535A; --ink-3: #686E75;
   --rule: #DCDAD5; --rule-2: #ECEAE6; --grad: #C3C0BA;
   --index: #C33A1C; --index-soft: #C33A1C1F;
   --band: #E4E2DD; --band-2: #D5D2CB; --good: #2F5D4A;
@@ -82,7 +82,7 @@ body {
 
 h1, h2, h3, h4 { font-weight: 640; letter-spacing: -0.022em; line-height: 1.12; margin: 0; text-wrap: balance; }
 p { margin: 0 0 1em; max-width: var(--measure); }
-a { color: inherit; text-underline-offset: 3px; text-decoration-color: var(--grad); text-decoration-thickness: 1px; }
+a { color: inherit; text-underline-offset: 3px; text-decoration-color: var(--ink-3); text-decoration-thickness: 1px; }
 a:hover { text-decoration-color: var(--index); }
 a:focus-visible, button:focus-visible {
   outline: 2px solid var(--index); outline-offset: 3px; border-radius: 2px;
@@ -120,7 +120,10 @@ sup { font-size: .68em; line-height: 0; }
   clip-path: polygon(50% 0, 100% 100%, 0 100%);
 }
 .masthead nav { margin-left: auto; display: flex; gap: 1.4rem; align-items: center; }
-.masthead nav a { font-size: .82rem; text-decoration: none; color: var(--ink-2); }
+.masthead nav a {
+  font-size: .82rem; text-decoration: none; color: var(--ink-2);
+  display: inline-flex; align-items: center; min-height: 24px;
+}
 .masthead nav a:hover, .masthead nav a[aria-current="page"] { color: var(--ink); }
 .masthead nav a[aria-current="page"] { box-shadow: inset 0 -2px 0 var(--index); }
 
@@ -194,7 +197,8 @@ sup { font-size: .68em; line-height: 0; }
 /* ---- figure blocks ---- */
 .figure {
   background: var(--panel); border: var(--hair) solid var(--rule);
-  border-radius: 3px; padding: clamp(1rem, 2.4vw, 1.6rem); margin-bottom: 1.1rem;
+  border-radius: 3px; padding: clamp(1rem, 2.4vw, 1.6rem);
+  margin: 0 0 1.1rem;   /* the UA default is 1em 40px; it breaks the grid */
 }
 .figure h3 { font-size: 1.06rem; font-weight: 640; margin-bottom: .25rem; }
 .figure .sub { font-size: .88rem; color: var(--ink-3); margin: 0 0 1.15rem; max-width: 74ch; }
@@ -207,7 +211,10 @@ sup { font-size: .68em; line-height: 0; }
 /* chart host: scrolls independently, never the page */
 .chart { overflow-x: auto; overflow-y: hidden; }
 .chart svg { display: block; height: auto; max-width: 100%; }
-.chart--wide svg { min-width: 620px; }
+.chart--wide svg { min-width: 700px; }
+/* the funnel is the first viewport and redraws itself compact under 560px,
+   so it must never be forced back up to the wide-chart floor */
+.instrument .chart--wide svg { min-width: 0; }
 .chart--wide { scrollbar-width: thin; }
 
 /* ---- data table ---- */
@@ -273,7 +280,7 @@ blockquote.pd cite {
   padding: .75rem 0; border-top: var(--hair) solid var(--rule-2);
 }
 .ledger { list-style: none; padding: 0; }
-.ledger li span:first-child { font-family: var(--mono); font-size: .76rem; color: var(--index); font-weight: 600; }
+.ledger li > span:first-child { font-family: var(--mono); font-size: .76rem; color: var(--index); font-weight: 600; }
 .ledger li .basis { display: block; font-size: .8rem; color: var(--ink-3); margin-top: .2rem; }
 
 /* ---- callout: what the data cannot say ---- */
@@ -283,6 +290,21 @@ blockquote.pd cite {
 }
 .caution p:last-child { margin-bottom: 0; }
 .caution .grad-label { display: block; margin-bottom: .5rem; }
+
+/* ---- contents: this page runs ~14,000px; give it a map ---- */
+.contents { margin: 2.2rem 0 0; }
+.contents h2 { font-size: 1rem; margin-bottom: .2rem; }
+.contents .toc a { grid-template-columns: 5.6rem 1fr; }
+.contents .toc a span:first-child { letter-spacing: .08em; }
+
+/* ---- evidence strength chip on each recommended action ---- */
+.strength {
+  font-family: var(--mono); font-size: .62rem; font-weight: 600; letter-spacing: .1em;
+  text-transform: uppercase; padding: .18rem .4rem; border-radius: 2px; line-height: 1;
+  border: var(--hair) solid var(--rule); color: var(--ink-3); white-space: nowrap;
+}
+.strength[data-s="strong"] { color: var(--index); border-color: var(--index); }
+.strength[data-s="moderate"] { color: var(--ink-2); }
 
 /* ================= methods page ================= */
 .doc { padding-block: clamp(2rem, 5vw, 3.5rem); }

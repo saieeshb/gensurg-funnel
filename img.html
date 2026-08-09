@@ -15,6 +15,13 @@
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
+<noscript>
+  <p style="max-width:68ch;margin:1rem auto;padding:.9rem 1.1rem;border:1px solid var(--rule);border-radius:3px;background:var(--panel-sunk)">
+    The charts on this page are drawn with JavaScript. With it disabled the prose, tables and
+    figures' captions still carry every finding, and <a href="assets/site.json">assets/site.json</a>
+    holds every published number.
+  </p>
+</noscript>
 
 <header class="masthead">
   <div class="wrap masthead-in">
@@ -34,9 +41,9 @@
 <section class="wrap titleblock">
   <h1>The IMG funnel is a different market, not a harder version of the same one</h1>
   <p class="thesis">
-    Non-US IMGs made up 7.2% of reported invitations in 2025–26. More than half of those
-    invitations were for preliminary positions. The ones who did get invited scored ten points
-    higher than the US MDs who got invited. Every stage of the funnel behaves differently.
+    Non-US IMGs made up 7.2% of reported invitations in 2025–26, and more than half of those
+    were for preliminary positions. The ones who did get invited scored ten points higher than the
+    US MDs who got invited. Every stage of the funnel behaves differently.
   </p>
   <div class="provenance grad-label">
     <span><b class="num">83</b> Non-US IMG invites, 2025–26</span>
@@ -140,9 +147,8 @@
     <p class="sub">Non-US IMG invitees against US MD invitees, 2025–26. Scores are recorded to the decade in this workbook.</p>
     <div class="chart chart--wide" id="fig-img-score"></div>
     <figcaption>
-      Note what this is not: it is not the score distribution of everyone who applied. It is the
-      distribution of everyone who <em>got through</em>. A higher median among invitees means the
-      filter sat higher, not that non-US IMGs score higher in general.
+      This is the score distribution of everyone who <em>got through</em>, not of everyone who
+      applied. A higher median among invitees means the filter sat higher for them.
     </figcaption>
   </figure>
 
@@ -242,11 +248,11 @@
     <p class="sub">2024–25 applicants who reported an outcome. IMG n = 15.</p>
     <div class="chart chart--wide" id="fig-img-outcome"></div>
     <figcaption>
-      Of 15 IMGs reporting: 2 categorical, 6 preliminary, 7 unmatched. Against 70.3% categorical
-      for MDs. <strong>Do not read these as match rates</strong> — outcome reporting is voluntary,
-      the direction of that bias is unknown, and fifteen people cannot support a rate. What the
-      comparison does show is that the preliminary and unmatched outcomes dominate a group whose
-      credentials, on paper, are not weaker.
+      Of 15 IMGs reporting: 2 categorical, 6 preliminary, 7 unmatched, against 70.3% categorical
+      for MDs. <strong>Do not read these as match rates.</strong> Outcome reporting is voluntary,
+      the direction of that bias is unknown, and fifteen people cannot support a rate. The
+      comparison does show preliminary and unmatched outcomes dominating a group whose
+      credentials, on paper, are no weaker.
     </figcaption>
   </figure>
 
@@ -264,7 +270,7 @@
       This is the finding that should be uncomfortable. IMG applicants brought a
       <strong>higher</strong> median publication count and an essentially identical median Step 2
       CK, sent nearly twice as many applications, and converted them at one-thirteenth the rate.
-      Whatever is producing that gap, it is not the credentials this workbook records.
+      Whatever produces that gap sits outside the credentials this workbook records.
     </figcaption>
   </figure>
 </section>
@@ -327,7 +333,7 @@
           them will tell you that you are doing twice as well as you are, at exactly the moment you
           are deciding whether to send letters or add programmes.
         </p>
-        <p class="evidence"><span>56.6% vs 1.9% prelim share</span><span>83 invitations</span><span>strong</span></p>
+        <p class="evidence"><span>56.6% vs 1.9% prelim share</span><span>83 invitations</span><span class="strength" data-s="strong">strong evidence</span></p>
       </div>
     </div>
     <div class="action">
@@ -338,7 +344,7 @@
           here. Eligibility and history come first: a mid-tier programme that has never taken a
           non-US IMG is a worse signal target than a stronger programme that takes several.
         </p>
-        <p class="evidence"><span>see the programme list above</span><span>counts are small — a hint, not a ranking</span></p>
+        <p class="evidence"><span>see the programme list above</span><span class="strength" data-s="weak">weak · small counts</span></p>
       </div>
     </div>
     <div class="action">
@@ -349,18 +355,18 @@
           per ten points — a steeper slope than for the pool as a whole. The invitation data agrees:
           the non-US IMGs who got through scored ten points above the MDs who got through.
         </p>
-        <p class="evidence"><span>IRR 1.64 (1.18–2.26), p = 0.003</span><span>n = 30 — descriptive</span></p>
+        <p class="evidence"><span>IRR 1.64 (1.18–2.26), p = 0.003</span><span class="strength" data-s="moderate">moderate · n = 30</span></p>
       </div>
     </div>
     <div class="action">
       <div>
         <h3>Do not expect publications to carry the application</h3>
         <p>
-          IMG applicants already bring more publications than US MDs — a median of 9 against 6 —
+          IMG applicants already bring more publications than US MDs, a median of 9 against 6,
           and convert applications at one-thirteenth the rate. Nothing in either workbook shows
           publication count producing interviews for this group.
         </p>
-        <p class="evidence"><span>IRR 0.93 (0.64–1.36), p = 0.71</span><span>see the <a href="methods.html#power">power caveat</a></span></p>
+        <p class="evidence"><span>IRR 0.93 (0.64–1.36), p = 0.71</span><span class="strength" data-s="moderate">moderate</span><span><a href="methods.html#power">power caveat</a></span></p>
       </div>
     </div>
     <div class="action">
@@ -372,7 +378,7 @@
           warning that it depends entirely on whether a given programme actually promotes its
           prelims. That is a question to ask programmes directly, during interviews.
         </p>
-        <p class="evidence"><span>6 of 15 reporting IMGs matched prelim</span><span>mechanism from applicant reports, not measured</span></p>
+        <p class="evidence"><span>6 of 15 reporting IMGs matched prelim</span><span class="strength" data-s="weak">weak · not measured</span></p>
       </div>
     </div>
   </div>
@@ -391,11 +397,11 @@
     this page than to the main findings.
   </p>
   <p>
-    The honest summary is that the <strong>invitation-side findings are solid</strong> — 83
-    invitations is enough to establish the prelim split and the score gap, and both are large
-    effects with tiny p-values. The <strong>outcome-side findings are not</strong>. Fifteen people
-    reported a match outcome. That is enough to say the distribution looks very different from the
-    US MD one, and not enough to say what an individual should expect.
+    The honest summary: the <strong>invitation-side findings are solid</strong>. 83 invitations
+    is enough to establish the prelim split and the score gap, both large effects with tiny
+    p-values. The <strong>outcome-side findings are not</strong>. Fifteen people reported a match
+    outcome, enough to say the distribution looks very different from the US MD one, and not
+    enough to say what an individual should expect.
   </p>
   <p style="margin-top:1.5rem">
     <a href="methods.html" style="font-weight:600">Full methodology and bias analysis →</a>
@@ -407,7 +413,7 @@
 <footer class="foot">
   <div class="wrap foot-in">
     <div>
-      <h4>Sources</h4>
+      <h3>Sources</h3>
       <ul>
         <li><a href="data/2024-2025%20Residency%20Application%20Spreadsheet.xlsx">2024–25 workbook (.xlsx)</a></li>
         <li><a href="data/Official%202026-2027%20Gen%20Surgery%20Spreadsheet.xlsx">2025–26 / 2026–27 workbook (.xlsx)</a></li>
@@ -416,14 +422,14 @@
       </ul>
     </div>
     <div>
-      <h4>Reproduce</h4>
+      <h3>Reproduce</h3>
       <ul>
         <li><a href="https://github.com/saieeshb/gensurg-funnel">Repository</a></li>
         <li><a href="https://github.com/saieeshb/gensurg-funnel/blob/main/analysis/img_analysis.py">img_analysis.py</a></li>
       </ul>
     </div>
     <div>
-      <h4>Pages</h4>
+      <h3>Pages</h3>
       <ul>
         <li><a href="./">Findings</a></li>
         <li><a href="img.html">IMG</a></li>
@@ -431,7 +437,7 @@
       </ul>
     </div>
     <div>
-      <h4>Colophon</h4>
+      <h3>Colophon</h3>
       <p class="colophon">
         Analysis and site by Saieesh. Data belongs to the General Surgery applicant community that
         built the original spreadsheets. No trackers, no cookies, no analytics.

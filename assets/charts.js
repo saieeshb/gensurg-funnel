@@ -28,7 +28,7 @@
   const showTip = (ev, html) => {
     if (!tip) {
       tip = document.createElement('div');
-      tip.setAttribute('role', 'status');
+      tip.setAttribute('aria-hidden', 'true');
       Object.assign(tip.style, {
         position: 'fixed', zIndex: 60, pointerEvents: 'none', maxWidth: '260px',
         background: 'var(--panel)', color: 'var(--ink)', border: '1px solid var(--rule)',
@@ -46,17 +46,22 @@
     tip.style.left = x + 'px'; tip.style.top = y + 'px';
   };
   const hideTip = () => { if (tip) tip.style.opacity = '0'; };
+  document.addEventListener('touchstart', e => {
+    if (!e.target.closest || !e.target.closest('.chart svg')) hideTip();
+  }, { passive: true });
   const hover = (node, html) => {
     node.style.cursor = 'crosshair';
     node.addEventListener('mousemove', e => showTip(e, html));
     node.addEventListener('mouseleave', hideTip);
-    node.addEventListener('focus', e => {
-      const b = node.getBoundingClientRect();
-      showTip({ clientX: b.left + b.width / 2, clientY: b.top }, html);
-    });
-    node.addEventListener('blur', hideTip);
-    node.setAttribute('tabindex', '0');
-    node.setAttribute('role', 'img');
+    // touch: the primary audience reads this on a phone, where mousemove never fires
+    node.addEventListener('touchstart', e => {
+      const t = e.touches[0];
+      if (t) showTip({ clientX: t.clientX, clientY: t.clientY }, html);
+    }, { passive: true });
+    // Deliberately NOT focusable and NOT role="img": one scatterplot alone holds 295
+    // marks, which would be 295 unnamed tab stops. The <svg> carries the accessible
+    // name and every figure ships a table view, which is the assistive path.
+    node.setAttribute('aria-hidden', 'true');
     return node;
   };
 
@@ -119,7 +124,7 @@
       s.appendChild(el('line', { x1: x(v), y1: axisY, x2: x(v), y2: axisY - (major ? 8 : 4), stroke: 'var(--grad)', 'stroke-width': 1 }));
       if (major) s.appendChild(txt(x(v), axisY - 13, v, { 'text-anchor': 'middle', 'font-size': 10, fill: 'var(--ink-3)' }));
     }
-    s.appendChild(txt(padL, axisY - 30, 'COUNT PER APPLICANT', { 'font-size': 9.5, 'letter-spacing': '.12em', fill: 'var(--ink-3)' }));
+    s.appendChild(txt(padL, axisY - 30, 'COUNT PER APPLICANT', { 'font-size': 11, 'letter-spacing': '.12em', fill: 'var(--ink-3)' }));
 
     stages.forEach((st, i) => {
       const y = top + i * rowH + 26;
@@ -185,9 +190,10 @@
       g.appendChild(el('rect', { x: x(st.d.p25), y: y - 9, width: Math.max(x(st.d.p75) - x(st.d.p25), 2), height: 18, fill: 'var(--band)', rx: 1, class: 'idx-sweep' }));
       const mx = x(st.d.median);
       g.appendChild(el('line', { x1: mx, y1: y - 14, x2: mx, y2: y + 14, stroke: 'var(--index)', 'stroke-width': 2.5, class: 'idx-mark' }));
-      const flip = mx > W * 0.66;
-      g.appendChild(txt(flip ? mx - 8 : mx + 8, y - 19, fmt(st.d.median), { 'font-size': 21, 'font-weight': 600, fill: 'var(--ink)', 'text-anchor': flip ? 'end' : 'start' }));
-      g.appendChild(txt(flip ? mx - 8 : mx + 8, y + 22, `IQR ${fmt(st.d.p25)}–${fmt(st.d.p75)}`, { 'font-size': 10, fill: 'var(--ink-3)', 'text-anchor': flip ? 'end' : 'start' }));
+      // value pinned to the right edge on its own baseline, so it can never collide
+      // with the stage label however small the median is
+      g.appendChild(txt(W - padR, y - 19, fmt(st.d.median), { 'font-size': 21, 'font-weight': 600, fill: 'var(--ink)', 'text-anchor': 'end' }));
+      g.appendChild(txt(W - padR, y + 22, `IQR ${fmt(st.d.p25)}–${fmt(st.d.p75)}`, { 'font-size': 10, fill: 'var(--ink-3)', 'text-anchor': 'end' }));
       hover(g, `<b>${st.k}</b><br>median <b>${fmt(st.d.median)}</b><br>middle half: ${fmt(st.d.p25)}–${fmt(st.d.p75)}<br>n = ${f.spine_n}`);
       s.appendChild(g);
     });
@@ -237,8 +243,8 @@
       hover(g, `<b>${r.band} applications</b><br>median yield <b>${r.med_yield}%</b><br>median ${fmt(r.med_ii)} invites from ${fmt(r.med_apps)} applications<br>n = ${r.n} applicants`);
       s.appendChild(g);
     });
-    s.appendChild(txt(padL, H - 8, 'APPLICATIONS SENT', { 'font-size': 9.5, 'letter-spacing': '.12em', fill: 'var(--ink-3)' }));
-    s.appendChild(txt(padL - 46, padT - 12, 'MEDIAN YIELD', { 'font-size': 9.5, 'letter-spacing': '.12em', fill: 'var(--ink-3)' }));
+    s.appendChild(txt(padL, H - 8, 'APPLICATIONS SENT', { 'font-size': 11, 'letter-spacing': '.12em', fill: 'var(--ink-3)' }));
+    s.appendChild(txt(padL - 46, padT - 12, 'MEDIAN YIELD', { 'font-size': 11, 'letter-spacing': '.12em', fill: 'var(--ink-3)' }));
     mount('#fig-yield', s, tbl(['Applications', 'n', 'Median apps', 'Median invites', 'Median yield'],
       rows.map(r => [r.band, r.n, fmt(r.med_apps), fmt(r.med_ii), r.med_yield + '%'])));
   }
@@ -273,7 +279,7 @@
     const mx = padL + st.mean * bw + bw / 2;
     s.appendChild(el('line', { x1: mx, y1: padT - 12, x2: mx, y2: y(0), stroke: 'var(--index)', 'stroke-width': 2, 'stroke-dasharray': '4 3' }));
     s.appendChild(txt(mx + 7, padT - 4, `mean ${st.mean}`, { 'font-size': 11.5, fill: 'var(--index)', 'font-weight': 600 }));
-    s.appendChild(txt(padL, H - 8, 'SIGNALS CONVERTED, OF 15', { 'font-size': 9.5, 'letter-spacing': '.12em', fill: 'var(--ink-3)' }));
+    s.appendChild(txt(padL, H - 8, 'SIGNALS CONVERTED, OF 15', { 'font-size': 11, 'letter-spacing': '.12em', fill: 'var(--ink-3)' }));
     mount('#fig-signal-dist', s, tbl(['Converted', 'Applicants'], rows.map(r => [`${r.k} / 15`, r.n])));
   }
 
@@ -297,11 +303,11 @@
       g.appendChild(el('rect', { x: padL, y: y - 10, width: Math.max(x(r.mean) - padL, 2), height: 20, fill: i === rows.length - 1 ? 'var(--index)' : 'var(--ink)', rx: 2 }));
       g.appendChild(txt(padL - 12, y + 5, r.band, { 'text-anchor': 'end', 'font-size': 12.5, fill: 'var(--ink)', 'font-family': 'var(--sans)', 'font-weight': 550 }));
       g.appendChild(txt(x(r.mean) + 10, y + 5, `${r.mean.toFixed(2)}`, { 'font-size': 14, 'font-weight': 600, fill: 'var(--ink)' }));
-      g.appendChild(txt(x(r.mean) + 44, y + 5, `n=${r.n}`, { 'font-size': 10.5, fill: 'var(--ink-3)' }));
+      g.appendChild(txt(x(r.mean) + 52, y + 5, `n=${r.n}`, { 'font-size': 10.5, fill: 'var(--ink-3)' }));
       hover(g, `<b>Step 2 CK ${r.band}</b><br>mean <b>${r.mean.toFixed(2)}</b> of 15 signals converted<br>n = ${r.n} applicants`);
       s.appendChild(g);
     });
-    s.appendChild(txt(padL, H - 8, 'MEAN SIGNALS CONVERTED, OF 15', { 'font-size': 9.5, 'letter-spacing': '.12em', fill: 'var(--ink-3)' }));
+    s.appendChild(txt(padL, H - 8, 'MEAN SIGNALS CONVERTED, OF 15', { 'font-size': 11, 'letter-spacing': '.12em', fill: 'var(--ink-3)' }));
     mount('#fig-signal-score', s, tbl(['Step 2 CK', 'n', 'Mean converted of 15'], rows.map(r => [r.band, r.n, r.mean.toFixed(2)])));
   }
 
@@ -341,8 +347,10 @@
       s.appendChild(el('line', { x1: x(d), y1: y(0), x2: x(d), y2: y(0) + 6, stroke: 'var(--grad)' }));
       s.appendChild(txt(x(d), y(0) + 19, new Date(d).toLocaleDateString('en-US', { month: 'short' }), { 'text-anchor': 'middle', 'font-size': 10.5, fill: 'var(--ink-3)' }));
     });
-    s.appendChild(txt(padL, H - 8, 'REPORTED INVITES PER DAY, 2025–26 CYCLE', { 'font-size': 9.5, 'letter-spacing': '.12em', fill: 'var(--ink-3)' }));
-    mount('#fig-timeline', s);
+    s.appendChild(txt(padL, H - 8, 'REPORTED INVITES PER DAY, 2025–26 CYCLE', { 'font-size': 11, 'letter-spacing': '.12em', fill: 'var(--ink-3)' }));
+    const busiest = rows.slice().sort((a, b) => b.n - a.n).slice(0, 12);
+    mount('#fig-timeline', s, tbl(['Date', 'Invites reported'],
+      busiest.map(r => [new Date(r.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }), r.n])));
   }
 
   /* =======================================================================
@@ -368,7 +376,7 @@
       hover(g, `<b>${r.tier}</b><br><b>${r.pct_signal}%</b> of invitees had signalled<br>${r.invites} invites reported`);
       s.appendChild(g);
     });
-    s.appendChild(txt(padL, H - 6, 'SHARE OF INVITEES WHO SIGNALLED', { 'font-size': 9.5, 'letter-spacing': '.12em', fill: 'var(--ink-3)' }));
+    s.appendChild(txt(padL, H - 6, 'SHARE OF INVITEES WHO SIGNALLED', { 'font-size': 11, 'letter-spacing': '.12em', fill: 'var(--ink-3)' }));
     mount('#fig-tier', s, tbl(['Programme demand', 'Invites', 'Signalled share'], rows.map(r => [r.tier, r.invites, r.pct_signal + '%'])));
   }
 
@@ -398,7 +406,7 @@
       hover(g, `<b>${r.band} interview invites</b><br><b>${r.pct}%</b> matched categorical<br>n = ${r.n} applicants reporting an outcome`);
       s.appendChild(g);
     });
-    s.appendChild(txt(padL, H - 8, 'INTERVIEW INVITES RECEIVED', { 'font-size': 9.5, 'letter-spacing': '.12em', fill: 'var(--ink-3)' }));
+    s.appendChild(txt(padL, H - 8, 'INTERVIEW INVITES RECEIVED', { 'font-size': 11, 'letter-spacing': '.12em', fill: 'var(--ink-3)' }));
     mount('#fig-match', s, tbl(['Invites', 'n', 'Matched categorical'], rows.map(r => [r.band, r.n, r.pct + '%'])));
   }
 
@@ -429,7 +437,7 @@
       hover(g, `<b>${r.term}</b><br>${r.irr.toFixed(2)}× expected interviews<br>95% CI ${r.lo.toFixed(2)}–${r.hi.toFixed(2)}<br>p = ${r.p < 0.001 ? '<0.001' : r.p.toFixed(3)}${sig ? '' : '<br><i>not distinguishable from no effect</i>'}`);
       s.appendChild(g);
     });
-    s.appendChild(txt(padL, H - 7, 'MULTIPLIER ON EXPECTED INTERVIEW COUNT (LOG SCALE)', { 'font-size': 9.5, 'letter-spacing': '.11em', fill: 'var(--ink-3)' }));
+    s.appendChild(txt(padL, H - 7, 'MULTIPLIER ON EXPECTED INTERVIEW COUNT (LOG SCALE)', { 'font-size': 11, 'letter-spacing': '.11em', fill: 'var(--ink-3)' }));
     mount('#fig-forest', s, tbl(['Factor', 'Multiplier', '95% CI', 'p'],
       rows.map(r => [r.term, r.irr.toFixed(2) + '×', `${r.lo.toFixed(2)}–${r.hi.toFixed(2)}`, r.p < 0.001 ? '<0.001' : r.p.toFixed(3)])));
   }
@@ -481,8 +489,12 @@
     lg.appendChild(el('rect', { x: 172, y: -8, width: 13, height: 11, fill: 'url(#hatch)', stroke: 'var(--index)', 'stroke-width': 1.2, rx: 2 }));
     lg.appendChild(txt(191, 1, '2025–26 invitees (people who got an interview)', { 'font-size': 11, fill: 'var(--ink-2)', 'font-family': 'var(--sans)' }));
     s.appendChild(lg);
-    s.appendChild(txt(padL, H - 8, 'STEP 2 CK SCORE', { 'font-size': 9.5, 'letter-spacing': '.12em', fill: 'var(--ink-3)' }));
-    mount('#fig-step2', s);
+    s.appendChild(txt(padL, H - 8, 'STEP 2 CK SCORE', { 'font-size': 11, 'letter-spacing': '.12em', fill: 'var(--ink-3)' }));
+    mount('#fig-step2', s, tbl(['Step 2 CK', 'All 2024–25 applicants', '2025–26 invitees'],
+      [...new Set([...a, ...b].map(d => d.x))].sort((m, n) => m - n).map(v => {
+        const A2 = a.find(d => d.x === v), B2 = b.find(d => d.x === v);
+        return [`${v}–${v + 4}`, A2 ? `${A2.p.toFixed(1)}% (${A2.n})` : '—', B2 ? `${B2.p.toFixed(1)}% (${B2.n})` : '—'];
+      })));
   }
 
   /* =======================================================================
@@ -520,12 +532,14 @@
       hover(g, `<b>${p.name}</b> (${p.state})<br>2024–25: ${p.y24} rank slots<br>2025–26: ${p.y25} rank slots`);
       s.appendChild(g);
     });
-    s.appendChild(txt(padL, H - 10, 'RANK SLOTS REPORTED, 2024–25', { 'font-size': 9.5, 'letter-spacing': '.11em', fill: 'var(--ink-3)' }));
+    s.appendChild(txt(padL, H - 10, 'RANK SLOTS REPORTED, 2024–25', { 'font-size': 11, 'letter-spacing': '.11em', fill: 'var(--ink-3)' }));
     s.appendChild(el('text', {
-      x: 15, y: padT + 6, fill: 'var(--ink-3)', 'font-size': 9.5, 'font-family': 'var(--mono)',
+      x: 15, y: padT + 6, fill: 'var(--ink-3)', 'font-size': 11, 'font-family': 'var(--mono)',
       'letter-spacing': '.11em', transform: `rotate(-90 15 ${padT + 6})`, 'text-anchor': 'end'
     }, '2025–26 RANK SLOTS'));
-    mount('#fig-demand', s);
+    const movers = pts.slice().sort((m, n) => (n.y24 + n.y25) - (m.y24 + m.y25)).slice(0, 15);
+    mount('#fig-demand', s, tbl(['Programme', 'State', '2024–25 rank slots', '2025–26 rank slots'],
+      movers.map(r => [r.name, r.state, r.y24, r.y25])));
   }
 
   /* =======================================================================
@@ -553,7 +567,7 @@
       hover(g, `<b>${r.term}</b><br>odds ratio ${r.or.toFixed(2)}<br>95% CI ${r.lo.toFixed(2)}–${r.hi.toFixed(2)}<br>p = ${r.p < 0.001 ? '<0.001' : r.p.toFixed(3)}${sig ? '' : '<br><i>not distinguishable from no effect</i>'}`);
       s.appendChild(g);
     });
-    s.appendChild(txt(padL, H - 7, 'ODDS OF BEING A SIGNALLED INVITEE (LOG SCALE)', { 'font-size': 9.5, 'letter-spacing': '.11em', fill: 'var(--ink-3)' }));
+    s.appendChild(txt(padL, H - 7, 'ODDS OF BEING A SIGNALLED INVITEE (LOG SCALE)', { 'font-size': 11, 'letter-spacing': '.11em', fill: 'var(--ink-3)' }));
     mount('#fig-invite-model', s, tbl(['Factor', 'Odds ratio', '95% CI', 'p'],
       rows.map(r => [r.term, r.or.toFixed(2), `${r.lo.toFixed(2)}–${r.hi.toFixed(2)}`, r.p < 0.001 ? '<0.001' : r.p.toFixed(3)])));
   }
@@ -582,7 +596,7 @@
       hover(g, `<b>${r.grp}</b><br><b>${r.pct_prelim}%</b> of invitations were preliminary<br>${r.cat} categorical · ${r.prelim} prelim`);
       s.appendChild(g);
     });
-    s.appendChild(txt(padL, H - 6, 'SHARE OF INVITATIONS THAT WERE PRELIMINARY', { 'font-size': 9.5, 'letter-spacing': '.11em', fill: 'var(--ink-3)' }));
+    s.appendChild(txt(padL, H - 6, 'SHARE OF INVITATIONS THAT WERE PRELIMINARY', { 'font-size': 11, 'letter-spacing': '.11em', fill: 'var(--ink-3)' }));
     mount('#fig-img-track', s, tbl(['Pathway', 'Categorical', 'Prelim', '% prelim'],
       rows.map(r => [r.grp, r.cat, r.prelim, r.pct_prelim + '%'])));
   }
@@ -630,8 +644,12 @@
     lg.appendChild(el('rect', { x: 190, y: -8, width: 13, height: 11, fill: 'url(#hatch-img)', stroke: 'var(--index)', 'stroke-width': 1.2, rx: 2 }));
     lg.appendChild(txt(209, 1, `Non-US IMG invitees (n=${sp.nus_n})`, { 'font-size': 11, fill: 'var(--ink-2)', 'font-family': 'var(--sans)' }));
     s.appendChild(lg);
-    s.appendChild(txt(padL, H - 8, 'STEP 2 CK OF PEOPLE WHO RECEIVED AN INVITATION', { 'font-size': 9.5, 'letter-spacing': '.11em', fill: 'var(--ink-3)' }));
-    mount('#fig-img-score', s);
+    s.appendChild(txt(padL, H - 8, 'STEP 2 CK OF PEOPLE WHO RECEIVED AN INVITATION', { 'font-size': 11, 'letter-spacing': '.11em', fill: 'var(--ink-3)' }));
+    mount('#fig-img-score', s, tbl(['Step 2 CK', 'US MD invitees', 'Non-US IMG invitees'],
+      xs.map(v => {
+        const M = md.find(d => d.x === v), N = nus.find(d => d.x === v);
+        return [`${v - 5}–${v + 4}`, M ? `${M.p.toFixed(1)}% (${M.n})` : '—', N ? `${N.p.toFixed(1)}% (${N.n})` : '—'];
+      })));
   }
 
   function imgYield() {
@@ -656,7 +674,7 @@
       hover(g, `<b>${r.grp}</b><br>median yield <b>${r.yield}%</b><br>${fmt(r.apps)} applications → ${fmt(r.ii)} invitations<br>n = ${r.n}`);
       s.appendChild(g);
     });
-    s.appendChild(txt(padL, H - 8, 'MEDIAN INTERVIEW YIELD, 2024–25', { 'font-size': 9.5, 'letter-spacing': '.12em', fill: 'var(--ink-3)' }));
+    s.appendChild(txt(padL, H - 8, 'MEDIAN INTERVIEW YIELD, 2024–25', { 'font-size': 11, 'letter-spacing': '.12em', fill: 'var(--ink-3)' }));
     mount('#fig-img-yield', s, tbl(['Pathway', 'n', 'Median apps', 'Median invites', 'Median yield'],
       rows.map(r => [r.grp, r.n, fmt(r.apps), fmt(r.ii), r.yield + '%'])));
   }
@@ -715,7 +733,7 @@
       hover(g, `<b>${r.k}</b><br>mean <b>${r.v.toFixed(2)}</b> of 15 signals converted<br>n = ${r.n} applicants`);
       s.appendChild(g);
     });
-    s.appendChild(txt(padL, H - 8, 'MEAN SIGNALS CONVERTED, OF 15', { 'font-size': 9.5, 'letter-spacing': '.12em', fill: 'var(--ink-3)' }));
+    s.appendChild(txt(padL, H - 8, 'MEAN SIGNALS CONVERTED, OF 15', { 'font-size': 11, 'letter-spacing': '.12em', fill: 'var(--ink-3)' }));
     mount('#fig-img-signal', s, tbl(['Pathway', 'n', 'Mean converted of 15'], rows.map(r => [r.k, r.n, r.v.toFixed(2)])));
   }
 
@@ -736,8 +754,8 @@
       hover(g, `<b>${r.name}</b><br>${r.n} Non-US IMG invitations reported`);
       s.appendChild(g);
     });
-    s.appendChild(txt(padL, H - 6, 'NON-US IMG INVITATIONS REPORTED, 2025–26', { 'font-size': 9.5, 'letter-spacing': '.11em', fill: 'var(--ink-3)' }));
-    mount('#fig-img-programs', s);
+    s.appendChild(txt(padL, H - 6, 'NON-US IMG INVITATIONS REPORTED, 2025–26', { 'font-size': 11, 'letter-spacing': '.11em', fill: 'var(--ink-3)' }));
+    mount('#fig-img-programs', s, tbl(['Programme', 'Non-US IMG invitations'], rows.map(r => [r.name, r.n])));
   }
 
   /* ---------------- fill inline figures from the data ---------------- */
@@ -781,12 +799,28 @@
     });
   }
 
+  // the funnel swaps layout at 560px; a rotation must not leave the wrong one
+  let wasCompact = null;
+  const watchFunnel = () => {
+    const host = $('#fig-funnel');
+    if (!host) return;
+    wasCompact = host.clientWidth < 560;
+    let t;
+    addEventListener('resize', () => {
+      clearTimeout(t);
+      t = setTimeout(() => {
+        const now = host.clientWidth < 560;
+        if (now !== wasCompact) { wasCompact = now; try { funnel(); reveal(); } catch (e) { console.error(e); } }
+      }, 180);
+    }, { passive: true });
+  };
+
   const run = () => {
     theme(); inlineNumbers();
     [funnel, yieldCurve, signalDist, signalByScore, timeline, tier, matchByII, forest, step2, demand, inviteModel,
      imgTrack, imgScore, imgYield, imgOutcome, imgSignal, imgPrograms]
       .forEach(f => { try { f(); } catch (e) { console.error(f.name, e); } });
-    reveal();
+    reveal(); watchFunnel();
   };
   document.readyState === 'loading' ? document.addEventListener('DOMContentLoaded', run) : run();
 })();

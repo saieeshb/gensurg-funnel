@@ -13,6 +13,13 @@
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
+<noscript>
+  <p style="max-width:68ch;margin:1rem auto;padding:.9rem 1.1rem;border:1px solid var(--rule);border-radius:3px;background:var(--panel-sunk)">
+    The charts on this page are drawn with JavaScript. With it disabled the prose, tables and
+    figures' captions still carry every finding, and <a href="assets/site.json">assets/site.json</a>
+    holds every published number.
+  </p>
+</noscript>
 
 <header class="masthead">
   <div class="wrap masthead-in">
@@ -113,9 +120,9 @@
 </p>
 <p>
   They are not dates. Google Sheets silently coerced entries typed as <code>7/15</code> into
-  7 July. The day component is always 15 — the denominator — and the month component is the
-  numerator. Values above twelve survived as text, because <code>13/15</code> is not a valid month,
-  which is exactly the pattern that confirms the mechanism rather than merely fitting it.
+  7 July. The day component is always 15, the denominator; the month component is the numerator.
+  Values above twelve survived as text, because <code>13/15</code> is not a valid month. That is
+  the pattern that confirms the mechanism rather than merely fitting it.
 </p>
 <pre>def sig_yield(v):
     if isinstance(v, (datetime, date, pd.Timestamp)):
@@ -131,15 +138,15 @@
 <h2 id="denominator">04 · The denominator problem</h2>
 <p>
   This is the analysis most readings of these spreadsheets get wrong. The invitation log records
-  invitations, not applications. <strong>You cannot compute the probability of an interview given a
-  signal from invitations alone.</strong> Observing that 54% of invitees signalled proves nothing
-  on its own — if 54% of applications carried signals, the lift would be exactly zero.
+  only invitations. <strong>You cannot compute the probability of an interview given a signal from
+  invitations alone.</strong> Observing that 54% of invitees signalled proves nothing on its own:
+  if 54% of applications carried signals, the lift would be exactly zero.
 </p>
 <p>
   The denominator came from <code>Comm 25-26</code>, a tab nobody treats as an analytic asset. It
   tallies, per programme, how many sheet users applied and how many applied <em>without</em> a
-  signal. Across 17 programmes and 544 applications, 44.1% carried a signal — and the rate varies
-  enormously by programme, from 10.7% at Orlando Health to 64.9% at Baylor.
+  signal. Across 17 programmes and 544 applications, 44.1% carried a signal, and the rate varies
+  enormously by programme: 10.7% at Orlando Health, 64.9% at Baylor.
 </p>
 <p>The estimate was then made two independent ways, which is why it is trustworthy:</p>
 <ul>
@@ -180,8 +187,8 @@
 </div>
 <p>
   An ICC of 0.415 is itself a finding: <strong>programmes differ from each other far more than
-  applicants within a programme differ from one another.</strong> Which programme you apply to is a
-  bigger lever than marginal changes to your application. Every model on the findings page uses
+  applicants within a programme differ.</strong> Which programme you apply to is a bigger lever
+  than marginal changes to your application. Every model on the findings page uses
   programme-clustered standard errors.
 </p>
 <div class="caution">
@@ -216,8 +223,8 @@
 <p>
   The first casualty was a hypothesis this analysis expected to confirm: that low scorers lean on
   signals to compensate. Among invitees, they do not. The 2024–25 conversion data then showed the
-  opposite relationship — conversion <em>rises</em> with score — which is the finding that
-  replaced it.
+  opposite relationship, with conversion <em>rising</em> alongside score, and that is the finding
+  which replaced it.
 </p>
 
 <h2 id="bias">07 · Selection bias, named and directed</h2>
@@ -237,7 +244,7 @@
 <p>
   Against roughly 1,700–1,800 categorical positions and 10–12 interviews offered per position,
   national volume is around 18,000–22,000 invitations. This dataset holds 1,154, so coverage is
-  about <strong>5–6%</strong>. That figure uses external anchors, not the workbooks.
+  about <strong>5–6%</strong>. That figure rests on external anchors rather than the workbooks.
 </p>
 <p>
   This is why the load-bearing estimate is the tier-matched one: both sides of that comparison are
@@ -268,14 +275,14 @@
 <h2 id="outcome-bias">09 · Why outcome reporting is the weakest link</h2>
 <p>
   Only 185 of 361 applicants (51%) recorded a match outcome. Reporting is voluntary and happens
-  months after the fact. People who match have a reason to return and update; people who do not
-  match also return, to ask what to do next. <strong>The direction of this bias is genuinely
+  months after the fact. People who match have reason to return and update; people who do not match
+  also return, to ask what to do next. <strong>The direction of this bias is genuinely
   unclear</strong>, which is worse than a bias whose direction is known.
 </p>
 <p>
   The 65.4% categorical rate on the findings page is therefore a within-sample figure and should
-  not be read as a match rate for General Surgery. The interview-count gradient is more robust than
-  the level, because it compares reporters against reporters.
+  not be read as a match rate for General Surgery. The interview-count gradient survives this
+  better than the level does, because it compares reporters against reporters.
 </p>
 <p>
   One further caution on the match model: conditional on interview count, Step 2 CK flips
@@ -301,10 +308,10 @@
 </div>
 <p>
   Effects below about ten percentage points are invisible here. Every null result on the findings
-  page — publications, geographic tie in the invite model, home rotation, DO status — is consistent
-  with a real effect under that threshold. <strong>Absence of evidence, not evidence of
-  absence.</strong> The publications result in particular says that publication count is not a
-  <em>large</em> lever for interview count; it does not say the effect is zero.
+  page (publications, geographic tie in the invite model, home rotation, DO status) is consistent
+  with a real effect under that threshold. <strong>This is absence of evidence.</strong> The
+  publications result says publication count is not a <em>large</em> lever for interview count. It
+  does not say the effect is zero.
 </p>
 
 <h2 id="invite-model">11 · Model specifications</h2>
@@ -322,9 +329,9 @@
   programme.
 </p>
 <p>
-  Cox–Snell pseudo-R² is 0.081. Most variance is unexplained, which is expected when the strongest
-  real inputs — letters, medical school, the interview itself — are unobserved. A model of this
-  data that reported a high R² would be the suspicious one.
+  Cox–Snell pseudo-R² is 0.081. Most variance is unexplained, as expected when the strongest real
+  inputs (letters, medical school, the interview itself) go unobserved. A model of this data
+  reporting a high R² would be the suspicious one.
 </p>
 <h3>Robustness</h3>
 <ul>
@@ -338,9 +345,9 @@
 <h3>A note on colour</h3>
 <p>
   The charts use one accent against neutral ink, which fails a categorical-palette validator on
-  lightness and chroma by construction — near-black is a neutral, not a hue. The checks that govern
-  whether two marks can be told apart all pass (CVD ΔE 26.4, normal-vision ΔE 38.8, contrast ≥3:1).
-  The one two-series chart additionally distinguishes its series by hatch fill, a legend, and
+  lightness and chroma by construction, since near-black is a neutral rather than a hue. The checks
+  governing whether two marks can be told apart all pass (CVD ΔE 26.4, normal-vision ΔE 38.8,
+  contrast ≥3:1). Both two-series charts also separate their series by hatch fill, a legend, and
   direct median labels, so identity never rests on colour alone.
 </p>
 
@@ -382,7 +389,7 @@ cd analysis
 <footer class="foot">
   <div class="wrap foot-in">
     <div>
-      <h4>Sources</h4>
+      <h3>Sources</h3>
       <ul>
         <li><a href="data/2024-2025%20Residency%20Application%20Spreadsheet.xlsx">2024–25 workbook (.xlsx)</a></li>
         <li><a href="data/Official%202026-2027%20Gen%20Surgery%20Spreadsheet.xlsx">2025–26 / 2026–27 workbook (.xlsx)</a></li>
@@ -391,14 +398,14 @@ cd analysis
       </ul>
     </div>
     <div>
-      <h4>Reproduce</h4>
+      <h3>Reproduce</h3>
       <ul>
         <li><a href="https://github.com/saieeshb/gensurg-funnel">Repository</a></li>
         <li><a href="https://github.com/saieeshb/gensurg-funnel/tree/main/analysis">Analysis scripts</a></li>
       </ul>
     </div>
     <div>
-      <h4>Pages</h4>
+      <h3>Pages</h3>
       <ul>
         <li><a href="./">Findings</a></li>
         <li><a href="img.html">IMG analysis</a></li>
@@ -406,7 +413,7 @@ cd analysis
       </ul>
     </div>
     <div>
-      <h4>Colophon</h4>
+      <h3>Colophon</h3>
       <p class="colophon">
         Analysis and site by Saieesh. Data belongs to the General Surgery applicant community that
         built the original spreadsheets. No trackers, no cookies, no analytics.
@@ -415,7 +422,6 @@ cd analysis
   </div>
 </footer>
 
-<script src="assets/data.js"></script>
-<script src="assets/charts.js"></script>
+<script>(()=>{const b=document.getElementById("theme");if(!b)return;const sys=()=>matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";const ap=t=>{document.documentElement.setAttribute("data-theme",t);b.textContent=t==="dark"?"Light":"Dark";b.setAttribute("aria-label",`Switch to ${t==="dark"?"light":"dark"} theme`)};ap(localStorage.getItem("theme")||sys());b.addEventListener("click",()=>{const t=document.documentElement.getAttribute("data-theme")==="dark"?"light":"dark";localStorage.setItem("theme",t);ap(t)})})();</script>
 </body>
 </html>

@@ -33,6 +33,13 @@
   FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, and DESIGN.md
 -->
 <a class="skip" href="#main">Skip to content</a>
+<noscript>
+  <p style="max-width:68ch;margin:1rem auto;padding:.9rem 1.1rem;border:1px solid var(--rule);border-radius:3px;background:var(--panel-sunk)">
+    The charts on this page are drawn with JavaScript. With it disabled the prose, tables and
+    figures' captions still carry every finding, and <a href="assets/site.json">assets/site.json</a>
+    holds every published number.
+  </p>
+</noscript>
 
 <header class="masthead">
   <div class="wrap masthead-in">
@@ -54,8 +61,8 @@
   <h1>Where the General Surgery funnel actually narrows</h1>
   <p class="thesis">
     Two cycles of the crowdsourced applicant spreadsheets, parsed end to end: 361 applicants who
-    reported what happened to them, and 1,154 individual interview invitations. The cycle is a
-    funnel, and every decision you control acts on exactly one stage of it.
+    reported what happened to them, and 1,154 interview invitations. The cycle is a funnel, and
+    every decision you control acts on exactly one stage of it.
   </p>
   <div class="provenance grad-label">
     <span><b class="num" data-val="meta.applicants_2425"></b> applicants, 2024–25</span>
@@ -89,13 +96,26 @@
   </div>
 </section>
 
+<section class="wrap contents">
+  <h2>What's on this page</h2>
+  <nav class="toc" aria-label="Contents">
+    <a href="#applications"><span>STAGE 01</span><span>Applications — past about sixty, you are buying nothing</span></a>
+    <a href="#invites"><span>STAGE 02</span><span>Invites — where the cycle is decided</span></a>
+    <a href="#match"><span>STAGE 03–04</span><span>Interviews and the match</span></a>
+    <a href="#two-cycles"><span>CYCLES</span><span>What two years can and cannot tell you</span></a>
+    <a href="#do"><span>DECISIONS</span><span>What to actually do differently</span></a>
+    <a href="#projection"><span>2026–27</span><span>What to expect this cycle</span></a>
+    <a href="#limits"><span>LIMITS</span><span>What this data cannot do</span></a>
+  </nav>
+</section>
+
 <!-- ============ STAGE 01 — APPLICATIONS ============ -->
 <section class="wrap stage" id="applications">
   <div class="stage-head">
     <p class="stage-mark">STAGE 01</p>
     <h2>Applications: past about sixty, you are buying nothing</h2>
     <p class="lede">
-      The first stage is the one applicants over-invest in most, and it is the only stage where
+      Applicants over-invest here more than anywhere else, and it is the only stage where
       spending more money reliably makes the numbers worse.
     </p>
   </div>
@@ -123,10 +143,10 @@
     <p class="sub">Median share of applications that produced an interview invitation, by how many were sent.</p>
     <div class="chart chart--wide" id="fig-yield"></div>
     <figcaption>
-      The causation runs both ways and the data cannot separate them: weaker applicants apply more
-      broadly <em>because</em> they expect a low hit rate. What the chart does establish is that
-      the broad-application strategy does not rescue them — the 120+ group sends more than twice
-      the median list and ends with fewer interviews than the 40–59 group.
+      Causation runs both ways here and the data cannot separate them: weaker applicants apply
+      more broadly <em>because</em> they expect a low hit rate. The chart still establishes that
+      the broad strategy fails to rescue them. The 120+ group sends more than twice the median
+      list and ends with fewer interviews than the 40–59 group.
     </figcaption>
   </figure>
 
@@ -134,9 +154,9 @@
     <p class="grad-label">What this does not say</p>
     <p>
       It does not say that cutting your list to 40 programmes will raise your hit rate. Your hit
-      rate is mostly a property of your application, not of your list length. It says that the
-      marginal application past roughly sixty is close to worthless, and the money and effort it
-      costs are better spent on the things Stage 02 rewards.
+      rate is mostly a property of your application. What it does say is that the marginal
+      application past roughly sixty is close to worthless, and the money and effort it costs are
+      better spent on the things Stage 02 rewards.
     </p>
   </div>
 </section>
@@ -148,7 +168,7 @@
     <h2>Invites: this is where the cycle is decided</h2>
     <p class="lede">
       Between 75 applications and 14 invites sits the only filter that matters. Four things move
-      it, and they are not the four things applicants talk about most.
+      it, and they are not what applicants talk about most.
     </p>
   </div>
 
@@ -220,12 +240,12 @@
     <p class="sub">Reported interview invitations per day, 25 September 2025 – 23 January 2026.</p>
     <div class="chart chart--wide" id="fig-timeline"></div>
     <figcaption>
-      <span class="num" data-val="timeline_stats.peak_share"></span>% of the entire season's
-      invitations landed on Wednesday 22 October 2025 — the release date recommended by the
-      Association of Program Directors in Surgery — across
+      <span class="num" data-val="timeline_stats.peak_share"></span>% of the season's invitations
+      landed on Wednesday 22 October 2025, the release date recommended by the Association of
+      Program Directors in Surgery, across
       <span class="num" data-val="timeline_stats.peak_programs"></span> programmes at once.
       Wednesdays alone carried <span class="num" data-val="timeline_stats.wed_share"></span>% of
-      the year. Note the tail: invitations kept arriving into January.
+      the year. The tail matters too: invitations kept arriving into January.
     </figcaption>
   </figure>
 
@@ -233,8 +253,8 @@
     <p class="grad-label">If you are at zero on release day</p>
     <p>
       Signal share among invitees peaks at 60.6% during release week and falls to 27.8% by
-      mid-November. Unsignalled invitations disproportionately arrive <em>off</em> the peak. A
-      quiet 21 October is not the verdict it feels like, and the season runs another three months.
+      mid-November. Unsignalled invitations arrive disproportionately <em>off</em> the peak. A
+      quiet 21 October feels like a verdict and is not one; the season runs another three months.
     </p>
   </div>
 
@@ -243,12 +263,12 @@
     <p class="sub">Logistic model over 1,093 invitations, standard errors clustered by programme.</p>
     <div class="chart chart--wide" id="fig-invite-model"></div>
     <figcaption>
-      Filled marks are distinguishable from no effect; hollow marks are not. Two things stand out.
-      An <strong>away rotation</strong> travels with a signal almost always — 86% of away-rotators
-      also signalled that programme. A <strong>home programme</strong> does not: home-programme
-      invitees signalled at exactly the base rate, which means a signal spent at home is a signal
-      wasted. Step 2 CK does not separate the two groups at all, because it has already done its
-      work at the screening stage.
+      Filled marks are distinguishable from no effect; hollow marks are not. Two stand out.
+      An <strong>away rotation</strong> almost always travels with a signal: 86% of away-rotators
+      also signalled that programme. A <strong>home programme</strong> does not. Home-programme
+      invitees signalled at exactly the base rate, so a signal spent at home is a signal wasted.
+      Step 2 CK separates the two groups not at all, having already done its work at the
+      screening stage.
     </figcaption>
   </figure>
 
@@ -295,8 +315,8 @@
     <p class="stage-mark">STAGE 03 — 04</p>
     <h2>Interviews and the match: the count is nearly the whole story</h2>
     <p class="lede">
-      By the time invitations are in hand, the outcome is close to determined. This is why Stage 02
-      deserves the effort that Stage 01 usually absorbs.
+      By the time invitations are in hand, the outcome is close to determined. That is why
+      Stage 02 deserves the effort Stage 01 usually absorbs.
     </p>
   </div>
 
@@ -320,10 +340,10 @@
     <p class="sub">Share matching categorical, among 2024–25 applicants who reported both.</p>
     <div class="chart chart--wide" id="fig-match"></div>
     <figcaption>
-      The gradient is steep and monotone, but note what it is not: evidence that interviews
-      <em>cause</em> matching independent of the application that earned them. Both are downstream
-      of the same underlying strength. The usable reading is that interview count is the best
-      single summary of where you stand, available months before Match Day.
+      The gradient is steep and monotone, but it is not evidence that interviews <em>cause</em>
+      matching independent of the application that earned them. Both sit downstream of the same
+      underlying strength. What you can use: interview count is the best single summary of where
+      you stand, available months before Match Day.
     </figcaption>
   </figure>
 
@@ -334,9 +354,10 @@
     <figcaption>
       Step 2 CK is the strongest measured input — each ten points multiplies expected interviews by
       <strong>1.22×</strong>. The IMG pathway carries a <strong>0.25×</strong> penalty, a
-      three-quarters reduction, holding score and everything else constant. And the one most
-      applicants over-weight: <strong>publications do nothing measurable</strong> (1.01×,
-      p = 0.85). Hollow marks are not distinguishable from no effect.
+      three-quarters reduction, holding score and everything else constant, and the subject of
+      <a href="img.html">the IMG analysis</a>. And the one most applicants over-weight:
+      <strong>publications do nothing measurable</strong> (1.01×, p = 0.85). Hollow marks are not
+      distinguishable from no effect.
     </figcaption>
   </figure>
 </section>
@@ -347,34 +368,34 @@
     <p class="stage-mark">ACROSS CYCLES</p>
     <h2>What two years can and cannot tell you</h2>
     <p class="lede">
-      The two workbooks record different things. Treating them as a time series would be the
-      easiest mistake to make with this data, so the comparisons below are limited to what is
-      genuinely comparable.
+      The two workbooks record different things. Treating them as a time series is the easiest
+      mistake to make with this data, so the comparisons below stay inside what is genuinely
+      comparable.
     </p>
   </div>
 
-  <div class="grid-2">
+  <div>
     <figure class="figure">
       <h3>Programme demand is only moderately stable</h3>
       <p class="sub">Rank-list slots reported per programme, 314 programmes present in both cycles.</p>
-      <div class="chart" id="fig-demand"></div>
+      <div class="chart chart--wide" id="fig-demand"></div>
       <figcaption>
-        Spearman ρ = <span class="num" data-val="demand_rho" data-dp="3"></span>. The broad ordering persists,
-        but only 9 of the top 25 programmes held their place. These are small counts driven by who
-        happened to fill in the sheet — read individual movements as reporting noise, not as
-        demand shifts.
+        Spearman ρ = <span class="num" data-val="demand_rho" data-dp="3"></span>. The broad
+        ordering persists, but only 9 of the top 25 programmes held their place. These are small
+        counts driven by who happened to fill in the sheet, so read individual movements as
+        reporting noise.
       </figcaption>
     </figure>
 
     <figure class="figure">
       <h3>The interview filter, drawn as a distribution</h3>
       <p class="sub">Step 2 CK: everyone who applied in 2024–25, against everyone who got an invite in 2025–26.</p>
-      <div class="chart" id="fig-step2"></div>
+      <div class="chart chart--wide" id="fig-step2"></div>
       <figcaption>
-        These are different populations in different years, so the gap is the interview filter, not
-        year-over-year drift. The useful number is the left tail:
+        These are different populations in different years, so the gap measures the interview
+        filter rather than year-over-year drift. The useful number is the left tail:
         <span class="num" data-val="step2.stats.inv_below_250"></span>% of invitees scored below
-        250. The filter is real and it is not where most applicants think it is.
+        250. The filter is real, and it sits lower than most applicants assume.
       </figcaption>
     </figure>
   </div>
@@ -386,7 +407,8 @@
       scored, and what happened to you — but it has no dated invitation log, so it can say nothing
       about timing. The <strong>2025–26</strong> workbook is invite-level: every invitation is
       dated and attributed to a programme, but no invitation can be linked to an applicant and no
-      outcome is recorded. They complement each other. They do not stack.
+      outcome is recorded. Each answers what the other cannot, which is why they are read side by
+      side here rather than joined into a trend.
     </p>
   </div>
 </section>
@@ -411,17 +433,17 @@
           invitees had signalled, so an unsignalled application there competes for a quarter of the
           seats. At programmes almost nobody signals, the same signal is a much rarer object.
         </p>
-        <p class="evidence"><span>Tier-matched OR 3.85 (1.77–8.35)</span><span>25 pp tier gradient</span><a href="methods.html#denominator">Method</a></p>
+        <p class="evidence"><span class="strength" data-s="strong">strong evidence</span><span>Tier-matched OR 3.85 (1.77–8.35)</span><a href="methods.html#denominator">Method</a></p>
       </div>
     </div>
     <div class="action">
       <div>
         <h3>Do not spend a signal on your home programme</h3>
         <p>
-          Home-programme invitees signalled at the base rate — 50.0% against 54.2% for everyone
-          else — with no visible penalty for skipping it. That is a free signal to redeploy.
+          Home-programme invitees signalled at the base rate, 50.0% against 54.2% for everyone
+          else, with no visible penalty for skipping it. That is a free signal to redeploy.
         </p>
-        <p class="evidence"><span>OR 0.85, p = 0.64</span><span>n = 1,142 invites</span><a href="methods.html#invite-model">Method</a></p>
+        <p class="evidence"><span class="strength" data-s="strong">strong evidence</span><span>OR 0.85, p = 0.64 · n = 1,142</span><a href="methods.html#invite-model">Method</a></p>
       </div>
     </div>
     <div class="action">
@@ -431,7 +453,7 @@
           Marginal return falls from +1.9 interviews per ten applications to zero. Redirect the
           fee money and the supplemental-essay hours into the applications you have already sent.
         </p>
-        <p class="evidence"><span>ρ = −0.57 apps vs yield</span><span>n = 346</span><a href="methods.html#confounding">Confounding</a></p>
+        <p class="evidence"><span class="strength" data-s="moderate">moderate · confounded</span><span>ρ = −0.57, n = 346</span><a href="methods.html#confounding">How</a></p>
       </div>
     </div>
     <div class="action">
@@ -442,7 +464,7 @@
           An away rotation is different: at least one programme director in the workbook describes
           keeping a shortlist for people who rotated there, exempt from score screening.
         </p>
-        <p class="evidence"><span>r = +0.44 score vs conversion</span><span>PD testimony, not measured effect</span></p>
+        <p class="evidence"><span class="strength" data-s="moderate">moderate</span><span>r = +0.44 score vs conversion; rotation effect is PD testimony, not measured</span></p>
       </div>
     </div>
     <div class="action">
@@ -453,7 +475,7 @@
           effect on interview count. This is the clearest gap between what applicants optimise and
           what the data rewards.
         </p>
-        <p class="evidence"><span>IRR 1.01 (0.93–1.09), p = 0.85</span><span>n = 337</span><a href="methods.html#power">Power caveat</a></p>
+        <p class="evidence"><span class="strength" data-s="strong">strong null</span><span>IRR 1.01 (0.93–1.09), n = 337</span><a href="methods.html#power">Power caveat</a></p>
       </div>
     </div>
     <div class="action">
@@ -463,7 +485,7 @@
           34% of letters got any response at all and 30% were personalised. Two independent tallies
           in the workbooks agree. It is cheap to send and near-useless as a read on where you stand.
         </p>
-        <p class="evidence"><span>42 of 122 responded</span><span>two independent tabs agree</span></p>
+        <p class="evidence"><span class="strength" data-s="moderate">moderate</span><span>42 of 122 responded; two independent tabs agree</span></p>
       </div>
     </div>
     <div class="action">
@@ -474,7 +496,7 @@
           workbook who reported six categorical invitations with zero signal conversions credited
           research volume and mentors making calls on their behalf.
         </p>
-        <p class="evidence"><span>2.4 vs 6.5 of 15, p &lt; 0.001</span><span>n = 15 IMGs — small</span></p>
+        <p class="evidence"><span class="strength" data-s="weak">weak · n = 15</span><span>2.4 vs 6.5 of 15, p &lt; 0.001</span><a href="img.html">Full IMG analysis</a></p>
       </div>
     </div>
   </div>
@@ -522,8 +544,8 @@
   <div class="caution">
     <p class="grad-label">Why two candidate dates</p>
     <p>
-      22 October 2025 satisfies both plausible rules — “programme access + 28 days” and “the fourth
-      Wednesday of October” — so last cycle cannot distinguish them. In 2026 they diverge by a week.
+      22 October 2025 satisfies both plausible rules, “programme access + 28 days” and “the fourth
+      Wednesday of October”, so last cycle cannot distinguish them. In 2026 they diverge by a week.
       Confirm against the APDS statement and the AAMC ERAS 2027 calendar before planning around
       either.
     </p>
@@ -577,7 +599,7 @@
 <footer class="foot">
   <div class="wrap foot-in">
     <div>
-      <h4>Sources</h4>
+      <h3>Sources</h3>
       <ul>
         <li><a href="data/2024-2025%20Residency%20Application%20Spreadsheet.xlsx">2024–25 workbook (.xlsx)</a></li>
         <li><a href="data/Official%202026-2027%20Gen%20Surgery%20Spreadsheet.xlsx">2025–26 / 2026–27 workbook (.xlsx)</a></li>
@@ -586,7 +608,7 @@
       </ul>
     </div>
     <div>
-      <h4>Reproduce</h4>
+      <h3>Reproduce</h3>
       <ul>
         <li><a href="https://github.com/saieeshb/gensurg-funnel">Repository</a></li>
         <li><a href="https://github.com/saieeshb/gensurg-funnel/tree/main/analysis">Analysis scripts</a></li>
@@ -594,7 +616,7 @@
       </ul>
     </div>
     <div>
-      <h4>Pages</h4>
+      <h3>Pages</h3>
       <ul>
         <li><a href="./">Findings</a></li>
         <li><a href="img.html">IMG analysis</a></li>
@@ -602,7 +624,7 @@
       </ul>
     </div>
     <div>
-      <h4>Colophon</h4>
+      <h3>Colophon</h3>
       <p class="colophon">
         Analysis and site by Saieesh. Data belongs to the General Surgery applicant community that
         built the original spreadsheets. Set in Public Sans and Spline Sans Mono. No trackers, no
