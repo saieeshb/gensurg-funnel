@@ -2,6 +2,8 @@
 
 **[surgery.saieesh.dev](https://surgery.saieesh.dev)**
 
+![The median path through a cycle: 75 applications narrowing to 14 interview invitations and 12 interviews attended, with 65.4% matching categorical](og/og-main.png)
+
 Two cycles of the crowdsourced General Surgery residency application spreadsheets, parsed end to
 end and analysed together: **361 applicants with match outcomes** (2024–25) and **1,154 individual
 interview invitations across 315 programs** (2025–26).
